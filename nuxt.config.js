@@ -17,7 +17,9 @@ export default {
   css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vuelidate' }
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -30,6 +32,8 @@ export default {
     }],
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    //dotenv
+    '@nuxtjs/dotenv',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -45,15 +49,22 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: "AIzaSyAHfMTF0839r8U0S8Aa_Y0VpSUS13Sadf4",
-    authDomain: "mobilerepair-afa54.firebaseapp.com",
-    projectId: "mobilerepair-afa54",
-    storageBucket: "mobilerepair-afa54.appspot.com",
-    messagingSenderId: "951150178130",
-    appId: "1:951150178130:web:45dcc1f67641e05ee0148b"
+          apiKey: process.env.API_KEY,
+          authDomain: process.env.AUTH_DOMAIN,
+          projectId: process.env.PROJECT_ID,
+          storageBucket: process.env.STORAGE_BUCKET,
+          messagingSenderId: process.env.MESSAGING_SENDER_ID,
+          appId: process.env.APP_ID
         },
         services: {
-          auth: true // Just as example. Can be any other service.
+          auth: {
+            persistence: 'local', // default
+            initialize: {
+              onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+              subscribeManually: false
+            },
+            ssr: true
+          }
         }
       }
     ]
@@ -82,11 +93,13 @@ export default {
         },
       },
     }
-    
+
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    
+
   }
+  
+
 }

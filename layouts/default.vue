@@ -25,6 +25,15 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <v-spacer></v-spacer>
+        <v-list-item @click="logout">
+          <v-list-item-action>
+            <v-icon>mdi-exit</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Выйти</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -38,6 +47,12 @@
 
 <script>
 export default {
+  middleware({ store, redirect }) {
+    // If the user is not authenticated
+    if (!store.getters.isAuth) {
+      return redirect('/login')
+    }
+  },
   data() {
     return {
       menuItems: [
@@ -77,8 +92,21 @@ export default {
           to: '/settings',
         },
       ],
-      name: 'Оператор',
     }
+  },
+  computed: {
+    isAuth() {
+      return this.$store.getters.isAuth
+    },
+    name() {
+      return this.$store.getters.user.displayName || 'Оператор'
+    },
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch('logout')
+      this.$router.push('/login')
+    },
   },
 }
 </script>

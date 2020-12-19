@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  layout: 'empty',
+  layout: 'login',
   props: {
     error: {
       type: Object,
