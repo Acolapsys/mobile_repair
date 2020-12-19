@@ -40,6 +40,23 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    //firebase config
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: "AIzaSyAHfMTF0839r8U0S8Aa_Y0VpSUS13Sadf4",
+    authDomain: "mobilerepair-afa54.firebaseapp.com",
+    projectId: "mobilerepair-afa54",
+    storageBucket: "mobilerepair-afa54.appspot.com",
+    messagingSenderId: "951150178130",
+    appId: "1:951150178130:web:45dcc1f67641e05ee0148b"
+        },
+        services: {
+          auth: true // Just as example. Can be any other service.
+        }
+      }
+    ]
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
