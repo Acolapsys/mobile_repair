@@ -48,8 +48,7 @@
 <script>
 export default {
   middleware({ store, redirect }) {
-    // If the user is not authenticated
-    if (!store.getters.isAuth) {
+    if (!store.getters['auth/isAuth']) {
       return redirect('/login')
     }
   },
@@ -96,15 +95,15 @@ export default {
   },
   computed: {
     isAuth() {
-      return this.$store.getters.isAuth
+      return this.$store.getters['auth/isAuth']
     },
     name() {
-      return this.$store.getters.user.displayName || 'Оператор'
+      return this.$store.getters['auth/user'].displayName || 'Оператор'
     },
   },
   methods: {
     async logout() {
-      await this.$store.dispatch('logout')
+      await this.$store.dispatch('auth/logout')
       this.$router.push('/login')
     },
   },

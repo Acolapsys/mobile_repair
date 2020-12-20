@@ -88,8 +88,10 @@ export default {
       }
 
       try {
-        await this.$store.dispatch('login', formData)
+        await this.$store.dispatch('auth/login', formData)
+        console.log('push1')
         this.$router.push('/')
+        console.log('push2')
       } catch (e) {
         console.log(this.error)
         this.alertMessage = messages[this.error.code] || 'Что-то пошло не так'

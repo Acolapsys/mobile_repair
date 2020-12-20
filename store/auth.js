@@ -1,67 +1,62 @@
-export default {
-  actions: {
-    async login({ commit }, { email, password }) {
-      try {
-        await this.$fire.auth
-          .signInWithEmailAndPassword(email, password)
-          .then(() => {
-            console.log('Successful')
-            commit('SET_PROCESSING', false)
-          })
-      } catch (e) {
-        console.log('Failure')
-        commit('setError', e)
-        throw e
-      }
-    },
-    async logout({ commit }) {
-      await this.$fire.auth.signOut()
-      commit('CLEAR_USER')
-    },
+export const actions = {
+  async login({ commit }, { email, password }) {
+    try {
+      await this.$fire.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('Successful')
+          commit('setToken', true)
+        })
+    } catch (e) {
+      console.log('Failure')
+      commit('setError', e)
+      throw e
+    }
   },
-  state: {
-    processing: false, // процесс загрузки
-    user: {},
-    isAuth: false,
+  async logout({ commit }) {
+    await this.$fire.auth.signOut()
+    commit('clearToken')
   },
-  mutations: {
-    SET_PROCESSING(state, payload) {
-      state.processing = payload
-    },
-    CLEAR_USER(state) {
+}
+export const state = () => ({
+  user: {},
+  token: null,
+})
+export const mutations = {
+  CLEAR_USER(state) {
+    state.user = {}
+  },
+  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims }) {
+    // you can request additional fields if they are optional (e.g. photoURL)
+    if (!authUser) {
       state.user = {}
-      state.isAuth = false
-    },
-    ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims }) {
-      // you can request additional fields if they are optional (e.g. photoURL)
-      if (!authUser) {
-        state.user = {}
-        state.isAuth = false
-        return
-      }
-      const { uid, email, displayName } = authUser
-      state.isAuth = true
+      state.token = null
+      return
+    }
+    const { uid, email, displayName } = authUser
 
-      state.user = {
-        uid,
-        displayName,
-        email,
-        isAdmin: claims.custom_claim,
-      }
-    },
+    state.user = {
+      uid,
+      displayName,
+      email,
+      isAdmin: claims.custom_claim,
+    }
   },
-  getters: {
-    getProcessing: (state) => {
-      return state.processing
-    },
-    user: (state) => {
-      return state.user
-    },
-    uid: (state) => {
-      return state.user.uid
-    },
-    isAuth: (state) => {
-      return state.isAuth
-    },
+  setToken(state, token) {
+    state.token = token
+  },
+  clearToken(state) {
+    state.token = null
+  },
+}
+export const getters = {
+  user: (state) => {
+    return state.user
+  },
+  uid: (state) => {
+    return state.user.uid
+  },
+  isAuth: (state) => {
+    return !!state.token
   },
 }
