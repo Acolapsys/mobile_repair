@@ -20,7 +20,7 @@ export default {
       { text: 'Срок заказа', value: 'willDoneAt' },
       { text: 'Статус', value: 'statusName' },
       { text: 'Создан', value: 'created' },
-      { text: 'Тип устройства', value: 'kindof_good' },
+      { text: 'Тип устройства', value: 'kindofgood' },
       { text: 'Изделие', value: 'model' },
       { text: 'Неисправность', value: 'malfunction' },
       { text: 'Клиент', value: 'clientName' },

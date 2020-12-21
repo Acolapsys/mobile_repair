@@ -64,6 +64,9 @@ export default {
               subscribeManually: false
             },
             ssr: true
+          },
+          firestore: {
+            
           }
         }
       }
