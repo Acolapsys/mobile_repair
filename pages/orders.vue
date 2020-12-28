@@ -32,7 +32,7 @@
         hide-details
       ></v-text-field>
     </v-row>
-    <OrdersTable />
+    <OrdersTable :orders="orders" />
 
     <NewOrder v-if="openNewOrder" @close="closeDialog" />
   </v-container>
@@ -44,6 +44,10 @@ export default {
   components: {
     NewOrder,
     OrdersTable,
+  },
+  async asyncData({ store }) {
+    const orders = await store.dispatch('orders/fetchOrders')
+    return { orders }
   },
   data: () => ({
     search: '',
