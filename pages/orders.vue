@@ -11,7 +11,7 @@
         color="success"
         class="mr-5"
         small
-        @click.stop="newOrder"
+        @click.stop="openOrder"
       >
         <v-icon left>mdi-plus</v-icon>
         Заказ
@@ -50,10 +50,8 @@ export default {
     Order,
     OrdersTable,
   },
-  async fetch({ store }) {
-    await store.commit('orders/setOpenedOrder', false)
-  },
   async asyncData({ store }) {
+    await store.commit('orders/setOpenedOrder', false)
     const orders = await store.dispatch('orders/fetchOrders')
     return { orders }
   },
@@ -70,11 +68,8 @@ export default {
     closeDialog() {
       this.$store.commit('orders/setOpenedOrder', false)
     },
-    openOrder(id) {
+    openOrder(id = null) {
       this.currentOrder = this.orders.find((order) => order.id === id)
-      this.$store.commit('orders/setOpenedOrder', true)
-    },
-    newOrder() {
       this.$store.commit('orders/setOpenedOrder', true)
     },
   },
