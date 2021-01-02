@@ -8,9 +8,7 @@ export const actions = {
       .collection('orders')
       .add({
         ...order,
-
         date: new Date().toLocaleDateString(),
-
         statusName: 'Новый',
         price: 0,
       })
@@ -28,9 +26,23 @@ export const actions = {
       .get()
       .then((snapshot) => {
         snapshot.docs.forEach((doc) => {
-          ordersData.push(doc.data())
+          ordersData.push({ ...doc.data(), id: doc.id })
         })
       })
     return ordersData
   },
+}
+
+export const state = () => ({
+  isOpenedOrder: false,
+})
+
+export const mutations = {
+  setOpenedOrder(state, modal) {
+    state.isOpenedOrder = modal
+  },
+}
+
+export const getters = {
+  isOpenedOrder: (state) => state.isOpenedOrder,
 }

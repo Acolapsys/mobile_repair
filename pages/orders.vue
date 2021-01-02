@@ -11,7 +11,7 @@
         color="success"
         class="mr-5"
         small
-        @click.stop="openNewOrder = true"
+        @click.stop="newOrder"
       >
         <v-icon left>mdi-plus</v-icon>
         Заказ
@@ -32,18 +32,26 @@
         hide-details
       ></v-text-field>
     </v-row>
-    <OrdersTable :orders="orders" />
-
-    <NewOrder v-if="openNewOrder" @close="closeDialog" />
+    <OrdersTable :orders="orders" @dblClickOrder="openOrder" />
+    <div class="order_overlay" :class="{ isVisible: isOpenedOrder }">
+      <div class="order_modal">
+        <Order :order="currentOrder" />
+      </div>
+    </div>
   </v-container>
 </template>
 <script>
-import NewOrder from '@/components/NewOrder'
+import Order from '@/components/Order'
 import OrdersTable from '@/components/OrdersTable'
+import { mapGetters } from 'vuex'
 export default {
+  name: 'Orders',
   components: {
-    NewOrder,
+    Order,
     OrdersTable,
+  },
+  async fetch({ store }) {
+    await store.commit('orders/setOpenedOrder', false)
   },
   async asyncData({ store }) {
     const orders = await store.dispatch('orders/fetchOrders')
@@ -51,11 +59,23 @@ export default {
   },
   data: () => ({
     search: '',
-    openNewOrder: false,
+    currentOrder: null,
   }),
+  computed: {
+    ...mapGetters({
+      isOpenedOrder: 'orders/isOpenedOrder',
+    }),
+  },
   methods: {
     closeDialog() {
-      this.openNewOrder = false
+      this.$store.commit('orders/setOpenedOrder', false)
+    },
+    openOrder(id) {
+      this.currentOrder = this.orders.find((order) => order.id === id)
+      this.$store.commit('orders/setOpenedOrder', true)
+    },
+    newOrder() {
+      this.$store.commit('orders/setOpenedOrder', true)
     },
   },
 }
@@ -67,5 +87,24 @@ export default {
 }
 .v-btn--outlined {
   border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.order_overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.46);
+  display: none;
+  z-index: 7;
+}
+.order_modal {
+  position: absolute;
+  right: 0;
+  left: auto;
+  top: 0;
+  overflow-y: hidden;
+  background-color: #fff;
+  width: 1000px;
+}
+.isVisible {
+  display: block;
 }
 </style>

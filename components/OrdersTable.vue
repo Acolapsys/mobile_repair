@@ -4,6 +4,7 @@
     :items="orders"
     :search="search"
     class="pt-5"
+    @dblclick:row="openOrder"
   >
     <template v-slot:item.created="{ item }">
       <span>{{ item.managerName }}</span>
@@ -44,25 +45,10 @@ export default {
       { text: 'Клиент', value: 'client' },
       { text: 'Цена', value: 'totalSum' },
     ],
-    orders1: [
-      {
-        orderId: 'A6153',
-        willDoneAt: '12.01.2021',
-        statusName: 'Готов',
-        created: { name: 'Тимур Шакиров', date: '12.12.2020' },
-        kindof_good: 'Смартфон',
-        modelOfGood: 'BQ 5518',
-        malfunction: 'Вода',
-        clientName: 'Рычкова Ирина',
-        totalSum: '0 руб',
-      },
-    ],
   }),
   methods: {
-    getName(item) {
-      const parsedobj = JSON.parse(JSON.stringify(item.created))
-      console.log(parsedobj)
-      return item
+    openOrder(e, row) {
+      this.$emit('dblClickOrder', row.item.id)
     },
   },
 }
