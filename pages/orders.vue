@@ -34,14 +34,14 @@
     </v-row>
     <OrdersTable :orders="orders" @dblClickOrder="openOrder" />
     <div class="order_overlay" :class="{ isVisible: isOpenedOrder }">
-      <div class="order_modal">
+      <div class="order_modal px-3">
         <Order :order="currentOrder" />
       </div>
     </div>
   </v-container>
 </template>
 <script>
-import Order from '@/components/Order'
+import Order from '@/components/Order/Order'
 import OrdersTable from '@/components/OrdersTable'
 import { mapGetters } from 'vuex'
 export default {

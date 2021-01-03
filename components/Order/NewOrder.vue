@@ -7,7 +7,7 @@
           <v-form @submit.prevent="createOrder">
             <v-row class="pt-5" align="center">
               <v-col col="2" class="col-left"> </v-col>
-              <v-col col="4"><h4 color="blue--text">Клиент</h4></v-col>
+              <v-col col="4"><h4>Клиент</h4></v-col>
             </v-row>
             <v-row align="center">
               <v-col col="2" class="col-left"
@@ -19,6 +19,7 @@
                   outlined
                   dense
                   required
+                  :hide-details="!nameErrors"
                   :error-messages="nameErrors"
                 ></v-text-field>
               </v-col>
@@ -33,6 +34,7 @@
                   outlined
                   dense
                   required
+                  :hide-details="!phoneErrors"
                   :error-messages="phoneErrors"
                 ></v-text-field>
               </v-col>
@@ -78,6 +80,7 @@
                   outlined
                   dense
                   required
+                  :hide-details="!modelErrors"
                   :error-messages="modelErrors"
                 ></v-text-field>
               </v-col>
@@ -92,6 +95,7 @@
                   outlined
                   rows="3"
                   required
+                  :hide-details="!malfunctionErrors"
                   :error-messages="malfunctionErrors"
                 ></v-textarea>
               </v-col>
@@ -248,7 +252,6 @@ export default {
     async createOrder() {
       if (this.$v.$invalid) {
         this.$v.$touch()
-
         return
       }
       const orderData = {
@@ -269,6 +272,20 @@ export default {
     },
     close() {
       this.$store.commit('orders/setOpenedOrder', false)
+      this.clearData()
+    },
+    clearData() {
+      this.clientName = ''
+      this.phoneNumber = null
+      this.kindofgood = ''
+      this.brandName = ''
+      this.modelOfGood = ''
+      this.malfunction = ''
+      this.appearance = ''
+      this.notes = ''
+      this.estimatedPrice = 0
+      this.prepayment = 0
+      this.managerName = ''
     },
   },
 }

@@ -31,6 +31,25 @@ export const actions = {
       })
     return ordersData
   },
+  async updateOrder({ commit }, order) {
+    const user = this.getters['auth/user']
+    await setTimeout(() => {
+      console.log(user.id, order)
+    }, 1000)
+
+    // await this.$fire.firestore
+    //   .collection('users')
+    //   .doc(user.uid)
+    //   .collection('orders')
+    //   .add({
+    //     ...order,
+    //     date: new Date().toLocaleDateString(),
+    //     price: 0,
+    //   })
+    //   .then((ref) => {
+    //     console.log(ref)
+    //   })
+  },
 }
 
 export const state = () => ({

@@ -89,11 +89,8 @@ export default {
 
       try {
         await this.$store.dispatch('auth/login', formData)
-        console.log('push1')
-        this.$router.push('/')
-        console.log('push2')
+        this.$router.push('/orders')
       } catch (e) {
-        console.log(this.error)
         this.alertMessage = messages[this.error.code] || 'Что-то пошло не так'
         this.snackbar = true
       }
