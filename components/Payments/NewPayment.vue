@@ -2,7 +2,9 @@
   <v-container class="pa-5">
     <v-form @submit.prevent="createIncome">
       <v-row class="my-2">
-        <span class="display-1">Приход денег</span>
+        <span class="display-1">{{
+          paymentType === 'income' ? 'Приход денег' : 'Расход денег'
+        }}</span>
         <v-spacer></v-spacer>
         <v-btn icon @click.stop="closeModal">
           <v-icon>mdi-close</v-icon>
@@ -14,8 +16,12 @@
         <span class="label-title mr-1">Сумма, руб:</span>
       </v-row>
       <v-row class="my-3 d-flex align-center">
-        <span class="label-title">Внесение денег в кассу</span
-        ><span class="red--text">*</span>
+        <span class="label-title">{{
+          paymentType === 'income'
+            ? 'Внесение денег в кассу'
+            : 'Списание денег из кассы'
+        }}</span>
+        <span class="red--text">*</span>
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -47,9 +53,8 @@
       <v-row>
         <v-col cols="10">
           <v-select
-            v-model="paymentType"
+            v-model="paymentArticle"
             :items="types"
-            value="Оплата покупателя за товар/услугу"
             outlined
             dense
             required
@@ -87,43 +92,73 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
 export default {
   name: 'NewPayment',
+  props: {
+    paymentType: {
+      // расходы, либо доходы
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
-    types: ['Оплата покупателя за товар/услугу', 'Прочий приход денег'],
     managers: ['Тимур Шакиров', 'Оператор'],
     amount: null,
     comment: null,
-    paymentType: null, // статья доходов
+    paymentArticle: null,
     manager: null,
-    bill: null,
   }),
   validations: {
     amount: { required },
     comment: { required },
-    paymentType: { required },
+    paymentArticle: { required },
     manager: { required },
   },
-  computed: {},
+  computed: {
+    ...mapGetters('payments', ['bill']),
+    types() {
+      if (this.paymentType === 'income') {
+        return ['Оплата покупателя за товар/услугу', 'Прочий приход денег']
+      } else {
+        return [
+          'Выплата зарплаты',
+          'Прочий расход денег',
+          'Оплата поставщикам товаров/запчастей',
+          'Возврат денег покупателю',
+          'Выплата прибыли',
+          'Оплата аренды',
+          'Оплата коммунальных расходов',
+          'Оплата рекламы',
+          'Выплата налогов',
+        ]
+      }
+    },
+  },
   methods: {
     closeModal() {
       this.$emit('close')
     },
-    createIncome() {
+    async createIncome() {
       if (this.$v.$invalid) {
         this.$v.$touch()
       }
+      const newBill =
+        this.paymentType === 'income'
+          ? +this.bill + +this.amount
+          : +this.bill - +this.amount
       const paymentData = {
-        type: 'income',
+        type: this.paymentType,
+        date: new Date().toLocaleDateString(),
         amount: this.amount,
         comment: this.comment,
-        paymentType: this.paymentType,
+        paymentArticle: this.paymentArticle,
         manager: this.manager,
+        bill: newBill,
       }
-      console.log(paymentData)
-      // this.$store.dispatch('payments/createPayment', paymentData)
-      this.$store.dispatch('payments/getBill').then((s) => (this.bill = s))
-      console.log(this.bill)
+      await this.$store.dispatch('payments/createPayment', paymentData)
+      await this.$store.dispatch('payments/updateBill', newBill)
+      this.closeModal()
     },
   },
 }

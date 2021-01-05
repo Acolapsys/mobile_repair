@@ -9,7 +9,7 @@
         >
           <h3 class="mb-3 body-1">Касса</h3>
           <div class="mb-3 display-1">
-            <span>{{ bill }}3</span>
+            <span>{{ bill }}</span>
             <span> руб</span>
           </div>
           <div class="buttons">
@@ -31,27 +31,27 @@
     </v-row>
     <div v-if="isOpenedPayment" class="payment_overlay">
       <div class="payment_modal px-3">
-        <IncomePayment v-if="paymentType === 'income'" @close="closeModal" />
-        <OutcomePayment
-          v-else-if="paymentType === 'outcome'"
-          @close="closeModal"
-        />
+        <NewPayment :payment-type="paymentType" @close="closeModal" />
       </div>
     </div>
   </v-container>
 </template>
 <script>
 import PaymentsTable from '@/components/Payments/PaymentsTable'
-import IncomePayment from '@/components/Payments/IncomePayment'
+import NewPayment from '@/components/Payments/NewPayment'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     PaymentsTable,
-    IncomePayment,
+    NewPayment,
   },
   data: () => ({
     isOpenedPayment: false,
     paymentType: null,
   }),
+  computed: {
+    ...mapGetters('payments', ['bill']),
+  },
   beforeMount() {
     this.isOpenedPayment = false
   },

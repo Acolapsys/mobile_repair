@@ -29,11 +29,12 @@ export const actions = {
             paymentsData.push({ ...doc.data(), id: doc.id })
           })
         })
+      console.log('store', paymentsData)
+      return paymentsData
     } catch (e) {
       commit('setError', e)
       throw e
     }
-    return paymentsData
   },
   async getBill({ commit }) {
     const uid = this.getters['auth/uid']
@@ -42,7 +43,22 @@ export const actions = {
         .collection('users')
         .doc(uid)
         .get()
-        .then((s) => s.data())
+        .then((res) => {
+          commit('setBill', res.data().bill)
+        })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async updateBill({ commit }, newBill) {
+    const uid = this.getters['auth/uid']
+    try {
+      await this.$fire.firestore
+        .collection('users')
+        .doc(uid)
+        .set({ bill: newBill })
+      commit('setBill', newBill)
     } catch (e) {
       commit('setError', e)
       throw e
