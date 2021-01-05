@@ -212,7 +212,7 @@ export default {
       notes: '',
       estimatedPrice: 0,
       prepayment: 0,
-      managerName: '',
+      managerName: this.$store.getters['auth/userName'],
     }
   },
   computed: {
