@@ -14,7 +14,6 @@ export default {
     OrderEdit,
   },
   transition: 'order',
-
   props: {
     order: {
       type: Object,

@@ -38,7 +38,7 @@ export const actions = {
       await this.$fire.firestore
         .collection('users')
         .doc(uid)
-        .set({ userName: name })
+        .set({ userName: name }, { merge: true })
         .then((res) => commit('setUserName', name))
     } catch (e) {
       console.log(e)

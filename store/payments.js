@@ -57,7 +57,7 @@ export const actions = {
       await this.$fire.firestore
         .collection('users')
         .doc(uid)
-        .set({ bill: newBill })
+        .set({ bill: newBill }, { merge: true })
       commit('setBill', newBill)
     } catch (e) {
       commit('setError', e)
