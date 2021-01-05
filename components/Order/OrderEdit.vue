@@ -8,7 +8,12 @@
             <v-row class="pt-5 d-flex flex-column" align="center">
               <v-col col="2"><h4>Исполнитель</h4></v-col>
               <v-col col="2">
-                <v-select v-model="managerName" :items="managers"></v-select>
+                <v-select
+                  v-model="managerName"
+                  :items="managers"
+                  outlined
+                  hide-details
+                ></v-select>
               </v-col>
             </v-row>
             <v-row class="pt-5 d-flex flex-column" align="center">
@@ -49,8 +54,11 @@ export default {
   },
   data: () => ({
     managers: ['Тимур Шакиров', 'Оператор'],
-    managerName: this.$store.getters['auth/userName'],
+    managerName: null,
   }),
+  beforeMount() {
+    this.managerName = this.$store.getters['auth/userName']
+  },
   methods: {
     close() {
       this.$store.commit('orders/setOpenedOrder', false)

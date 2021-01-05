@@ -14,7 +14,7 @@
         }}</span>
       </template>
       <template v-slot:item.created="{ item }">
-        <span>{{ item.manager }}</span>
+        <span>{{ item.managerName }}</span>
         <br />
         <span>{{ item.date }}</span>
       </template>

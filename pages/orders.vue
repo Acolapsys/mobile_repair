@@ -33,7 +33,7 @@
       ></v-text-field>
     </v-row>
     <OrdersTable :orders="orders" @dblClickOrder="openOrder" />
-    <div class="order_overlay" :class="{ isVisible: isOpenedOrder }">
+    <div v-if="isOpenedOrder" class="order_overlay">
       <div class="order_modal px-3">
         <Order :order="currentOrder" />
       </div>
@@ -65,9 +65,6 @@ export default {
     }),
   },
   methods: {
-    closeDialog() {
-      this.$store.commit('orders/setOpenedOrder', false)
-    },
     openOrder(id = null) {
       this.currentOrder = this.orders.find((order) => order.id === id)
       this.$store.commit('orders/setOpenedOrder', true)
@@ -87,7 +84,6 @@ export default {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.46);
-  display: none;
   z-index: 7;
 }
 .order_modal {
@@ -98,8 +94,5 @@ export default {
   overflow-y: hidden;
   background-color: #fff;
   width: 1000px;
-}
-.isVisible {
-  display: block;
 }
 </style>

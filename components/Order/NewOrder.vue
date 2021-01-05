@@ -156,12 +156,12 @@
             <v-row align="center">
               <v-col col="2" class="col-left"><span>Менеджер</span> </v-col>
               <v-col col="4">
-                <v-text-field
+                <v-select
                   v-model="managerName"
+                  :items="managers"
                   outlined
-                  dense
                   hide-details
-                ></v-text-field>
+                ></v-select>
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -212,7 +212,8 @@ export default {
       notes: '',
       estimatedPrice: 0,
       prepayment: 0,
-      managerName: this.$store.getters['auth/userName'],
+      managerName: null,
+      managers: ['Тимур Шакиров', 'Оператор'],
     }
   },
   computed: {
@@ -247,6 +248,9 @@ export default {
       }
       return ''
     },
+  },
+  beforeMount() {
+    this.managerName = this.$store.getters['auth/userName']
   },
   methods: {
     async createOrder() {

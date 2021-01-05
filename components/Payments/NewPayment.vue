@@ -68,9 +68,8 @@
       <v-row>
         <v-col cols="6">
           <v-select
-            v-model="manager"
+            v-model="managerName"
             :items="managers"
-            value="Тимур Шакиров"
             outlined
             dense
             required
@@ -107,13 +106,13 @@ export default {
     amount: null,
     comment: null,
     paymentArticle: null,
-    manager: null,
+    managerName: null,
   }),
   validations: {
     amount: { required },
     comment: { required },
     paymentArticle: { required },
-    manager: { required },
+    managerName: { required },
   },
   computed: {
     ...mapGetters('payments', ['bill']),
@@ -135,6 +134,9 @@ export default {
       }
     },
   },
+  beforeMount() {
+    this.managerName = this.$store.getters['auth/userName']
+  },
   methods: {
     closeModal() {
       this.$emit('close')
@@ -153,7 +155,7 @@ export default {
         amount: this.amount,
         comment: this.comment,
         paymentArticle: this.paymentArticle,
-        manager: this.manager,
+        managerName: this.managerName,
         bill: newBill,
       }
       await this.$store.dispatch('payments/createPayment', paymentData)
