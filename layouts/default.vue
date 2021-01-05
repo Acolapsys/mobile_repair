@@ -98,7 +98,7 @@ export default {
       return this.$store.getters['auth/isAuth']
     },
     name() {
-      return this.$store.getters['auth/user'].displayName || 'Оператор'
+      return this.$store.getters['auth/userName'] || 'Оператор'
     },
   },
   methods: {

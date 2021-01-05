@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <span class="display-2">Заказы</span>
+      <span class="text-h4">Заказы</span>
       <v-spacer></v-spacer>
     </v-row>
     <v-divider></v-divider>

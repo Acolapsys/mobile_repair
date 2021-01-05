@@ -17,6 +17,35 @@ export const actions = {
     await this.$fire.auth.signOut()
     commit('clearToken')
   },
+  async getUserName({ commit }) {
+    const uid = this.getters['auth/uid']
+    try {
+      await this.$fire.firestore
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((res) => {
+          commit('setUserName', res.data().userName)
+        })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async updateName({ commit }, name) {
+    const uid = this.getters['auth/uid']
+    try {
+      await this.$fire.firestore
+        .collection('users')
+        .doc(uid)
+        .set({ userName: name })
+        .then((res) => commit('setUserName', name))
+    } catch (e) {
+      console.log(e)
+      commit('setError', e)
+      throw e
+    }
+  },
 }
 export const state = () => ({
   user: {},
@@ -33,20 +62,20 @@ export const mutations = {
       state.token = null
       return
     }
-    const { uid, email, displayName } = authUser
+    const { uid, email } = authUser
 
-    state.user = {
-      uid,
-      displayName,
-      email,
-      isAdmin: claims.custom_claim,
-    }
+    state.user = { ...state.user, uid, email, isAdmin: claims.custom_claim }
   },
   setToken(state, token) {
     state.token = token
   },
   clearToken(state) {
     state.token = null
+  },
+  setUserName(state, name) {
+    console.log('name=', name)
+    state.user = { ...state.user, name }
+    console.log('newName=', state.user.name)
   },
 }
 export const getters = {
@@ -58,5 +87,8 @@ export const getters = {
   },
   isAuth: (state) => {
     return !!state.token
+  },
+  userName: (state) => {
+    return state.user.name
   },
 }

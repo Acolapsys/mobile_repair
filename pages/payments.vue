@@ -1,6 +1,10 @@
 <template>
   <v-container>
     <v-row>
+      <span class="text-h4">Платежи</span>
+    </v-row>
+    <v-divider></v-divider>
+    <v-row>
       <v-col cols="4">
         <v-sheet
           class="d-flex flex-column justify-center align-center grey lighten-4 pa-6 rounded-lg mt-6"

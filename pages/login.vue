@@ -79,17 +79,16 @@ export default {
     async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch()
-
         return
       }
       const formData = {
         email: this.email,
         password: this.password,
       }
-
       try {
         await this.$store.dispatch('auth/login', formData)
         await this.$store.dispatch('payments/getBill')
+        await this.$store.dispatch('auth/getUserName')
         this.$router.push('/orders')
       } catch (e) {
         this.alertMessage = messages[this.error.code] || 'Что-то пошло не так'
