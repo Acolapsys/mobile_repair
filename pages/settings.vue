@@ -46,6 +46,27 @@
           <h5 class="text-body-1 mr-4">Название:</h5>
           <span>Здесь будет название фирмы</span>
         </div>
+        <h4 class="text-h6 font-weight-medium">Статусы заказов</h4>
+        <v-divider></v-divider>
+        <div class="d-flex align-center mt-10">
+          <h5 class="text-body-1 mr-4">Новый статус:</h5>
+          <v-text-field
+            v-model="status"
+            outlined
+            dense
+            hide-details
+            style="max-width: 300px"
+            class="mr-4"
+          >
+          </v-text-field>
+          <v-btn class="primary font-weight-normal" @click.prevent="addStatus"
+            >Добавить</v-btn
+          >
+        </div>
+        <div class="d-flex align-center">
+          <span class="mr-5">Статусы: </span>
+          <v-select :items="statuses" style="max-width: 200px"></v-select>
+        </div>
       </v-sheet>
     </v-row>
   </v-container>
@@ -57,6 +78,7 @@ export default {
   data: () => ({
     name: null,
     companyName: null,
+    status: null,
   }),
   methods: {
     async updateName() {
@@ -66,9 +88,14 @@ export default {
     async createCompany() {
       await this.$store.dispatch('company/createCompany', this.companyName)
     },
+    async addStatus() {
+      await this.$store.dispatch('options/addStatus', this.status)
+      this.status = null
+    },
   },
   computed: {
     ...mapGetters('company', ['isCompanyExist']),
+    ...mapGetters('options', ['statuses']),
   },
 }
 </script>

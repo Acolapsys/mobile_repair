@@ -90,6 +90,7 @@ export default {
         await this.$store.dispatch('company/getCompanyId')
         await this.$store.dispatch('auth/getUserName')
         await this.$store.dispatch('payments/getBill')
+        await this.$store.dispatch('options/fetchStatuses')
         this.$router.push('/orders')
       } catch (e) {
         this.alertMessage = messages[this.error.code] || 'Что-то пошло не так'
