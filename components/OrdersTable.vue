@@ -6,6 +6,16 @@
     class="pt-5"
     @dblclick:row="openOrder"
   >
+    <template v-slot:item.statusName="{ item }">
+      <v-select
+        outlined
+        dense
+        :items="statuses"
+        :value="item.statusName"
+        style="font-size: 12px"
+        hide-details
+      ></v-select>
+    </template>
     <template v-slot:item.created="{ item }">
       <span>{{ item.managerName }}</span>
       <br />
@@ -22,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     orders: {
@@ -37,7 +48,7 @@ export default {
         align: 'start',
         value: 'orderId',
       },
-      { text: 'Статус', value: 'statusName' },
+      { text: 'Статус', value: 'statusName', width: '100' },
       { text: 'Создан', value: 'created' },
       { text: 'Тип устройства', value: 'kindofgood' },
       { text: 'Изделие', value: 'modelOfGood' },
@@ -50,6 +61,9 @@ export default {
     openOrder(e, row) {
       this.$emit('dblClickOrder', row.item.id)
     },
+  },
+  computed: {
+    ...mapGetters('options', ['statuses']),
   },
 }
 </script>
