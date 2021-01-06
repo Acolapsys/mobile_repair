@@ -19,9 +19,36 @@
             <v-row class="pt-5 d-flex flex-column" align="center">
               <v-col col="2"><h4>Выполненная работа</h4></v-col>
             </v-row>
+            <v-row class="d-flex align-end">
+              <v-col cols="8">
+                <span>Название</span>
+                <v-text-field
+                  v-model="work"
+                  outlined
+                  hide-details
+                  dense
+                  class="mt-1"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <span>Цена</span>
+                <v-text-field
+                  v-model="workPrice"
+                  outlined
+                  hide-details
+                  dense
+                  class="mt-1"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-btn color="primary" @click.prevent="addWork"
+                  ><v-icon>mdi-check</v-icon></v-btn
+                >
+              </v-col>
+            </v-row>
             <v-row>
-              <v-col col="6">
-                <WorksAndParts :works="order.works" />
+              <v-col>
+                <WorksAndParts :order-id="order.id" />
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -55,9 +82,17 @@ export default {
   data: () => ({
     managers: ['Тимур Шакиров', 'Оператор'],
     managerName: null,
+    work: null,
+    workPrice: null,
+    worksList: null,
   }),
-  beforeMount() {
+  async beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
+    this.worksList = await this.$store.dispatch(
+      'orders/fetchWorks',
+      this.order.id
+    )
+    console.log('before', this.worksList)
   },
   methods: {
     close() {
@@ -66,6 +101,22 @@ export default {
     async saveOrder() {
       const orderData = {}
       await this.$store.dispatch('orders/updateOrder', orderData)
+    },
+    async addWork() {
+      const workData = {
+        work: this.work,
+        workPrice: this.workPrice,
+      }
+      console.log(workData, this.order.id)
+      await this.$store.dispatch('orders/addWork', {
+        workData,
+        orderId: this.order.id,
+      })
+      this.cleanData()
+    },
+    cleanData() {
+      this.work = null
+      this.workPrice = null
     },
   },
 }

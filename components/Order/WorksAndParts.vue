@@ -26,31 +26,31 @@
 
 <script>
 export default {
-  props: {
-    works: {
-      type: Array,
-    },
-  },
+  props: ['orderId'],
   data: () => ({
     headers: [
       {
         text: 'Наименование',
         align: 'start',
-        value: 'title',
+        value: 'work',
       },
-      { text: 'Количество', value: 'amount' },
-      { text: 'Цена, руб', value: 'price' },
-      { text: 'Сумма', value: 'sum' },
+      { text: 'Количество', value: 'workPrice' },
+      { text: 'Цена, руб', value: 'workPrice' },
+      { text: 'Сумма', value: 'workPrice' },
     ],
+    works: [],
   }),
   computed: {
     fullPrice() {
       if (this.works) {
-        return this.works.reduce((price, work) => price + work.sum)
+        return this.works.reduce((price, work) => price + +work.workPrice, 0)
       } else {
         return 0
       }
     },
+  },
+  async beforeMount() {
+    this.works = await this.$store.dispatch('orders/fetchWorks', this.orderId)
   },
   methods: {
     openItem(e, row) {

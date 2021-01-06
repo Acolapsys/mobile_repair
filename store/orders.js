@@ -60,6 +60,45 @@ export const actions = {
     //     console.log(ref)
     //   })
   },
+  async addWork({ commit }, data) {
+    try {
+      console.log(data.orderId)
+      const companyId = this.getters['company/companyId']
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .doc(data.orderId)
+        .collection('worksAndParts')
+        .add(data.workData)
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async fetchWorks({ commit }, orderId) {
+    try {
+      const companyId = this.getters['company/companyId']
+      const worksData = []
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .doc(orderId)
+        .collection('worksAndParts')
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            worksData.push({ ...doc.data(), id: doc.id })
+          })
+        })
+      console.log('fetch', worksData)
+      return worksData
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
 }
 
 export const state = () => ({
