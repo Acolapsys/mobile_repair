@@ -30,7 +30,7 @@
       </v-col>
       <v-col cols="8">
         <h5 class="title">Движение средств</h5>
-        <PaymentsTable />
+        <PaymentsTable :key="counter" />
       </v-col>
     </v-row>
     <div v-if="isOpenedPayment" class="payment_overlay">
@@ -52,6 +52,7 @@ export default {
   data: () => ({
     isOpenedPayment: false,
     paymentType: null,
+    counter: 0,
   }),
   computed: {
     ...mapGetters('payments', ['bill']),
@@ -71,6 +72,7 @@ export default {
     closeModal() {
       this.paymentType = ''
       this.isOpenedPayment = false
+      this.counter++
     },
   },
 }

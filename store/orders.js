@@ -1,40 +1,50 @@
 export const actions = {
   async createOrder({ commit }, order) {
-    const user = this.getters['auth/user']
+    const companyId = this.getters['company/companyId']
 
-    await this.$fire.firestore
-      .collection('users')
-      .doc(user.uid)
-      .collection('orders')
-      .add({
-        ...order,
-        date: new Date().toLocaleDateString(),
-        statusName: 'Новый',
-        price: 0,
-      })
-      .then((ref) => {
-        console.log(ref)
-      })
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .add({
+          ...order,
+          date: new Date().toLocaleDateString(),
+          statusName: 'Новый',
+          price: 0,
+        })
+        .then((ref) => {
+          console.log(ref)
+        })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
   },
   async fetchOrders({ commit }) {
-    const uid = this.getters['auth/uid']
+    const companyId = this.getters['company/companyId']
     const ordersData = []
-    await this.$fire.firestore
-      .collection('users')
-      .doc(uid)
-      .collection('orders')
-      .get()
-      .then((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          ordersData.push({ ...doc.data(), id: doc.id })
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            ordersData.push({ ...doc.data(), id: doc.id })
+          })
         })
-      })
-    return ordersData
+      return ordersData
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
   },
   async updateOrder({ commit }, order) {
-    const user = this.getters['auth/user']
+    const companyId = this.getters['company/companyId']
     await setTimeout(() => {
-      console.log(user.id, order)
+      console.log(companyId, order)
     }, 1000)
 
     // await this.$fire.firestore

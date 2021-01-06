@@ -1,10 +1,10 @@
 export const actions = {
   async createPayment({ commit }, payment) {
-    const uid = this.getters['auth/uid']
+    const companyId = this.getters['company/companyId']
     try {
       await this.$fire.firestore
-        .collection('users')
-        .doc(uid)
+        .collection('companies')
+        .doc(companyId)
         .collection('payments')
         .add(payment)
         .then((ref) => {
@@ -16,12 +16,12 @@ export const actions = {
     }
   },
   async fetchPayments({ commit }) {
-    const uid = this.getters['auth/uid']
+    const companyId = this.getters['company/companyId']
     const paymentsData = []
     try {
       await this.$fire.firestore
-        .collection('users')
-        .doc(uid)
+        .collection('companies')
+        .doc(companyId)
         .collection('payments')
         .get()
         .then((snapshot) => {
@@ -37,13 +37,14 @@ export const actions = {
     }
   },
   async getBill({ commit }) {
-    const uid = this.getters['auth/uid']
+    const companyId = this.getters['company/companyId']
     try {
       return await this.$fire.firestore
-        .collection('users')
-        .doc(uid)
+        .collection('companies')
+        .doc(companyId)
         .get()
         .then((res) => {
+          console.log('res', res.data())
           commit('setBill', res.data().bill)
         })
     } catch (e) {
@@ -52,12 +53,12 @@ export const actions = {
     }
   },
   async updateBill({ commit }, newBill) {
-    const uid = this.getters['auth/uid']
+    const companyId = this.getters['company/companyId']
     try {
       await this.$fire.firestore
-        .collection('users')
-        .doc(uid)
-        .set({ bill: newBill }, { merge: true })
+        .collection('companies')
+        .doc(companyId)
+        .update({ bill: newBill })
       commit('setBill', newBill)
     } catch (e) {
       commit('setError', e)

@@ -64,6 +64,13 @@ export default {
       isOpenedOrder: 'orders/isOpenedOrder',
     }),
   },
+  watch: {
+    async isOpenedOrder(value) {
+      if (!value) {
+        this.orders = await this.$store.dispatch('orders/fetchOrders')
+      }
+    },
+  },
   methods: {
     openOrder(id = null) {
       this.currentOrder = this.orders.find((order) => order.id === id)

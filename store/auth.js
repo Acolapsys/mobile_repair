@@ -38,8 +38,8 @@ export const actions = {
       await this.$fire.firestore
         .collection('users')
         .doc(uid)
-        .set({ userName: name }, { merge: true })
-        .then((res) => commit('setUserName', name))
+        .update({ userName: name })
+        .then(() => commit('setUserName', name))
     } catch (e) {
       console.log(e)
       commit('setError', e)
@@ -73,9 +73,7 @@ export const mutations = {
     state.token = null
   },
   setUserName(state, name) {
-    console.log('name=', name)
     state.user = { ...state.user, name }
-    console.log('newName=', state.user.name)
   },
 }
 export const getters = {
