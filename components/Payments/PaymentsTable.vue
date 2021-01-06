@@ -19,10 +19,14 @@
         <span>{{ item.date }}</span>
       </template>
       <template v-slot:item.income="{ item }">
-        <span>{{ item.type === 'income' ? item.amount : 0 }}</span>
+        <span :class="{ 'green--text': item.type === 'income' }">{{
+          item.type === 'income' ? item.amount : 0
+        }}</span>
       </template>
       <template v-slot:item.outcome="{ item }">
-        <span>{{ item.type === 'outcome' ? item.amount : 0 }}</span>
+        <span :class="{ 'red--text': item.type === 'outcome' }">{{
+          item.type === 'outcome' ? item.amount : 0
+        }}</span>
       </template>
     </v-data-table>
   </v-sheet>
