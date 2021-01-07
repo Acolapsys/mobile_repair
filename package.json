@@ -20,6 +20,7 @@
     "firebase": "^8.2.1",
     "firebase-admin": "^9.4.2",
     "nuxt": "^2.14.6",
+    "printd": "^1.4.2",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {

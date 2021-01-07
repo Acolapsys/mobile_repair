@@ -29,6 +29,7 @@
         >&nbsp;от&nbsp;<em>{{ order.date }}</em></span
       >
     </p>
+    <p><br /></p>
     <table
       style="width: 100%"
       border="0"
@@ -104,8 +105,9 @@
       <tbody>
         <tr>
           <td style="width: 50%" valign="top" data-mce-style="width: 50%;">
-            Приемщик: _____________________&nbsp;{{ order.managerName }}
+            <p>Приемщик: _____________________&nbsp;{{ order.managerName }}</p>
           </td>
+          <td></td>
           <td>
             <p style="text-align: right" data-mce-style="text-align: right;">
               _____________________ {{ order.clientName }}
@@ -160,6 +162,7 @@
         >&nbsp;от&nbsp;<em>{{ order.date }}</em></span
       >
     </p>
+    <p><br /></p>
     <table
       style="width: 100%"
       border="0"
@@ -235,7 +238,7 @@
       <tbody>
         <tr>
           <td style="width: 50%" valign="top" data-mce-style="width: 50%;">
-            Приемщик: _____________________&nbsp;{{ order.managerName }}
+            <p>Приемщик: _____________________&nbsp;{{ order.managerName }}</p>
           </td>
           <td>
             <p style="text-align: right" data-mce-style="text-align: right;">
@@ -324,3 +327,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+p {
+  margin-bottom: 2px !important;
+}
+@media print {
+  p {
+    margin-bottom: 2px !important;
+  }
+}
+</style>
