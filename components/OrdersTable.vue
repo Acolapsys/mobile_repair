@@ -54,7 +54,7 @@ export default {
       { text: 'Изделие', value: 'modelOfGood' },
       { text: 'Неисправность', value: 'malfunction' },
       { text: 'Клиент', value: 'client' },
-      { text: 'Цена', value: 'totalSum' },
+      { text: 'Цена', value: 'totalOrderPrice' },
     ],
   }),
   methods: {

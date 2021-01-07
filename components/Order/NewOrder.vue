@@ -270,6 +270,8 @@ export default {
         estimatedPrice: this.estimatedPrice,
         prepayment: this.prepayment,
         managerName: this.managerName,
+        statusName: 'Новый',
+        totalOrderPrice: 0,
       }
       await this.$store.dispatch('orders/createOrder', orderData)
       this.close()

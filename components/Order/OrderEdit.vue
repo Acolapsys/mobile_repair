@@ -48,7 +48,7 @@
             </v-row>
             <v-row>
               <v-col>
-                <WorksAndParts :order-id="order.id" />
+                <WorksAndParts :key="counter" :order-id="order.id" />
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -85,6 +85,7 @@ export default {
     work: null,
     workPrice: null,
     worksList: null,
+    counter: 0,
   }),
   async beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
@@ -105,12 +106,13 @@ export default {
       const workData = {
         work: this.work,
         workPrice: this.workPrice,
-      }
-      await this.$store.dispatch('orders/addWork', {
-        workData,
         orderId: this.order.id,
-      })
+        totalOrderPrice: this.order.totalOrderPrice,
+      }
+
+      await this.$store.dispatch('orders/addWork', workData)
       this.cleanData()
+      this.counter++
     },
     cleanData() {
       this.work = null

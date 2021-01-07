@@ -11,8 +11,6 @@ export const actions = {
         .add({
           ...order,
           date: new Date().toLocaleDateString(),
-          statusName: 'Новый',
-          price: 0,
           orderId: newId,
         })
     } catch (e) {
@@ -36,6 +34,23 @@ export const actions = {
           })
         })
       return ordersData
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async updateTotalOrderPrice({ commit }, { orderId, totalOrderPrice }) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .doc(orderId)
+        .update({ totalOrderPrice })
+        .then(() => {
+          console.log('total', totalOrderPrice)
+        })
     } catch (e) {
       commit('setError', e)
       throw e
@@ -84,17 +99,23 @@ export const actions = {
     //     console.log(ref)
     //   })
   },
-  async addWork({ commit }, data) {
+  async addWork(
+    { commit, dispatch },
+    { work, workPrice, orderId, totalOrderPrice }
+  ) {
     try {
-      console.log(data.orderId)
       const companyId = this.getters['company/companyId']
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
         .collection('orders')
-        .doc(data.orderId)
+        .doc(orderId)
         .collection('worksAndParts')
-        .add(data.workData)
+        .add({ work, workPrice })
+      await dispatch('updateTotalOrderPrice', {
+        orderId,
+        totalOrderPrice: +totalOrderPrice + +workPrice,
+      })
     } catch (e) {
       commit('setError', e)
       throw e
