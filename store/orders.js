@@ -121,6 +121,22 @@ export const actions = {
       throw e
     }
   },
+  async deleteWork({ commit }, { workId, orderId }) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .doc(orderId)
+        .collection('worksAndParts')
+        .doc(workId)
+        .delete()
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
   async getOrder({ commit }, orderId) {
     const companyId = this.getters['company/companyId']
     let orderData = {}

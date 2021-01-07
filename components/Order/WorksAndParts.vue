@@ -9,6 +9,13 @@
           class="pt-5"
           @dblclick:row="openItem"
         >
+          <template v-slot:item.actions="{ item }">
+            <v-btn icon
+              ><v-icon small @click="deleteWork(item)">
+                mdi-delete
+              </v-icon></v-btn
+            >
+          </template>
         </v-data-table>
       </v-col>
     </v-row>
@@ -37,6 +44,7 @@ export default {
       { text: 'Количество', value: 'workPrice', align: 'right' },
       { text: 'Цена, руб', value: 'workPrice', align: 'right' },
       { text: 'Сумма', value: 'workPrice', align: 'right' },
+      { text: '', value: 'actions', sortable: false, align: 'right' },
     ],
     works: [],
   }),
@@ -55,6 +63,9 @@ export default {
   methods: {
     openItem(e, row) {
       this.$emit('dblClickOrder', row.item.id)
+    },
+    deleteWork(work) {
+      this.$emit('onDeleteWork', work)
     },
   },
 }

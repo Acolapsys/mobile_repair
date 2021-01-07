@@ -48,7 +48,11 @@
             </v-row>
             <v-row>
               <v-col>
-                <WorksAndParts :key="counter" :order-id="order.id" />
+                <WorksAndParts
+                  :key="counter"
+                  :order-id="order.id"
+                  @onDeleteWork="deleteWork"
+                />
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -112,6 +116,19 @@ export default {
 
       await this.$store.dispatch('orders/addWork', workData)
       this.cleanData()
+      this.counter++
+    },
+    async deleteWork(work) {
+      const newPriceData = {
+        orderId: this.order.id,
+        totalOrderPrice: +this.order.totalOrderPrice - +work.workPrice,
+      }
+      const workData = {
+        workId: work.id,
+        orderId: this.order.id,
+      }
+      await this.$store.dispatch('orders/deleteWork', workData)
+      await this.$store.dispatch('orders/updateTotalOrderPrice', newPriceData)
       this.counter++
     },
     cleanData() {
