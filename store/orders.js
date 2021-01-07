@@ -100,6 +100,27 @@ export const actions = {
       throw e
     }
   },
+  async getOrder({ commit }, orderId) {
+    const companyId = this.getters['company/companyId']
+    let orderData = {}
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .where('orderId', '==', orderId)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.docs.length) {
+            orderData = { ...snapshot.docs[0].data() }
+          }
+        })
+      return orderData
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
   async fetchWorks({ commit }, orderId) {
     try {
       const companyId = this.getters['company/companyId']

@@ -1,6 +1,15 @@
 <template>
-  <div>Отчеты</div>
+  <div><Reception :order-id="orderId" /></div>
 </template>
+
 <script>
-export default {}
+import Reception from '@/components/PrintDocs/Reception'
+export default {
+  components: {
+    Reception,
+  },
+  data: () => ({
+    orderId: 'A1',
+  }),
+}
 </script>
