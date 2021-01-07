@@ -13,7 +13,6 @@ export const mutations = {
 export const getters = {
   error: (s) => s.error,
   managers: (s) => {
-    console.log('managers')
     return s.managers
   },
 }

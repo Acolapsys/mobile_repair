@@ -92,7 +92,6 @@ export default {
       'orders/fetchWorks',
       this.order.id
     )
-    console.log('before', this.worksList)
   },
   methods: {
     close() {
@@ -107,7 +106,6 @@ export default {
         work: this.work,
         workPrice: this.workPrice,
       }
-      console.log(workData, this.order.id)
       await this.$store.dispatch('orders/addWork', {
         workData,
         orderId: this.order.id,
