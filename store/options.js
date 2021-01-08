@@ -8,9 +8,6 @@ export const actions = {
         .update({
           statuses: this.$fireModule.firestore.FieldValue.arrayUnion(status),
         })
-        .then((ref) => {
-          console.log(ref)
-        })
     } catch (e) {
       commit('setError', e)
       throw e

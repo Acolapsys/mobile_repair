@@ -33,7 +33,6 @@ export const actions = {
         .doc(uid)
         .get()
         .then((res) => {
-          console.log(res.data())
           commit('setCompanyId', res.data().companyId)
         })
     } catch (e) {

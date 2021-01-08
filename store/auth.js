@@ -4,11 +4,9 @@ export const actions = {
       await this.$fire.auth
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          console.log('Successful')
           commit('setToken', true)
         })
     } catch (e) {
-      console.log('Failure')
       commit('setError', e)
       throw e
     }

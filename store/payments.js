@@ -7,9 +7,6 @@ export const actions = {
         .doc(companyId)
         .collection('payments')
         .add(payment)
-        .then((ref) => {
-          console.log(ref)
-        })
     } catch (e) {
       commit('setError', e)
       throw e
@@ -29,7 +26,6 @@ export const actions = {
             paymentsData.push({ ...doc.data(), id: doc.id })
           })
         })
-      console.log('store', paymentsData)
       return paymentsData
     } catch (e) {
       commit('setError', e)
@@ -39,12 +35,11 @@ export const actions = {
   async getBill({ commit }) {
     const companyId = this.getters['company/companyId']
     try {
-      return await this.$fire.firestore
+      await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
         .then((res) => {
-          console.log('res', res.data())
           commit('setBill', res.data().bill)
         })
     } catch (e) {

@@ -50,9 +50,6 @@ export const actions = {
         .collection('orders')
         .doc(orderId)
         .update({ totalOrderPrice })
-        .then(() => {
-          console.log('total', totalOrderPrice)
-        })
     } catch (e) {
       commit('setError', e)
       throw e
@@ -60,16 +57,12 @@ export const actions = {
   },
   async getLastOrderId({ commit }) {
     const companyId = this.getters['company/companyId']
-    let lastId = ''
     try {
-      await this.$fire.firestore
+      return await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
-        .then((snapshot) => {
-          lastId = snapshot.data().lastOrderId || 'A0'
-        })
-      return lastId
+        .then((snapshot) => snapshot.data().lastOrderId || 'A0')
     } catch (e) {
       commit('setError', e)
       throw e
