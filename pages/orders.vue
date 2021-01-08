@@ -56,11 +56,7 @@
         hide-details
       ></v-text-field>
     </v-row>
-    <OrdersTable
-      :orders="orders"
-      @dblClickOrder="openOrder"
-      @changeOrderStatus="updateOrders"
-    />
+    <OrdersTable @dblClickOrder="openOrder" @changeOrderStatus="updateOrders" />
     <div v-if="isOpenedOrder" class="order_overlay">
       <div class="order_modal px-3">
         <Order :order="currentOrder" />

@@ -32,6 +32,10 @@ export default {
         orderId: this.orderId,
         statusName,
       })
+      this.$store.commit('orders/editOrder', {
+        orderId: this.orderId,
+        statusName,
+      })
     },
   },
 }

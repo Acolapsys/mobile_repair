@@ -216,6 +216,13 @@ export const mutations = {
   setOrders(state, ordersData) {
     state.orders = ordersData
   },
+  editOrder(state, { orderId, statusName }) {
+    state.orders = [
+      ...state.orders.map((el) =>
+        el.id === orderId ? { ...el, statusName } : el
+      ),
+    ]
+  },
 }
 
 export const getters = {

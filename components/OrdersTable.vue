@@ -28,12 +28,6 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  props: {
-    orders: {
-      type: Array,
-      required: true,
-    },
-  },
   data: () => ({
     search: '',
     headers: [
@@ -63,12 +57,14 @@ export default {
       })
       this.$emit('changeOrderStatus')
     },
+    // нужен для получения orderID при смене статуса заказа в таблице, отрабатывает до селекта
     clickRow(item) {
       this.selectedOrderId = item.id
     },
   },
   computed: {
     ...mapGetters('options', ['statuses']),
+    ...mapGetters('orders', ['orders']),
   },
 }
 </script>
