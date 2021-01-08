@@ -161,20 +161,14 @@ export const actions = {
   },
   async getOrder({ commit }, orderId) {
     const companyId = this.getters['company/companyId']
-    let orderData = {}
     try {
-      await this.$fire.firestore
+      return await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
         .collection('orders')
-        .where('orderId', '==', orderId)
+        .doc(orderId)
         .get()
-        .then((snapshot) => {
-          if (snapshot.docs.length) {
-            orderData = { ...snapshot.docs[0].data() }
-          }
-        })
-      return orderData
+        .then((snapshot) => snapshot.data())
     } catch (e) {
       commit('setError', e)
       throw e

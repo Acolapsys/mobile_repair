@@ -99,6 +99,16 @@ export default {
       // расходы, либо доходы
       type: String,
       required: true,
+      default: 'income',
+    },
+    amountProp: {
+      type: Number,
+    },
+    commentProp: {
+      type: String,
+    },
+    paymentArticleProp: {
+      type: String,
     },
   },
   data: () => ({
@@ -136,6 +146,9 @@ export default {
   },
   beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
+    this.amount = this.amountProp
+    this.comment = this.commentProp
+    this.paymentArticle = this.paymentArticleProp
   },
   methods: {
     closeModal() {

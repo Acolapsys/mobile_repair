@@ -8,7 +8,7 @@
     @click:row="clickRow"
   >
     <template v-slot:item.statusName="{ item, value }">
-      <OrderStatusSelector :status-name="value" :order-id="selectedOrderId" />
+      <OrderStatusSelector :status-name="value" :order-id="item.id" />
     </template>
     <template v-slot:item.created="{ item }">
       <span>{{ item.managerName }}</span>
