@@ -16,9 +16,33 @@
         <v-icon left>mdi-plus</v-icon>
         Заказ
       </v-btn>
-      <v-btn depressed small outlined class="mr-2"> Готовые </v-btn>
-      <v-btn depressed small outlined class="mr-2"> В работе </v-btn>
-      <v-btn depressed small outlined class="mr-2"> Ждет запчасть </v-btn>
+      <v-btn
+        depressed
+        small
+        outlined
+        class="mr-2"
+        @click="orderStatusFilter = 'Готов'"
+      >
+        Готов
+      </v-btn>
+      <v-btn
+        depressed
+        small
+        outlined
+        class="mr-2"
+        @click="orderStatusFilter = 'Новый'"
+      >
+        Новый
+      </v-btn>
+      <v-btn
+        depressed
+        small
+        outlined
+        class="mr-2"
+        @click="orderStatusFilter = 'Ждет запчасть'"
+      >
+        Ждет запчасть
+      </v-btn>
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -58,6 +82,7 @@ export default {
   data: () => ({
     search: '',
     currentOrder: null,
+    orderStatusFilter: null,
   }),
   computed: {
     ...mapGetters({
@@ -69,6 +94,12 @@ export default {
       if (!value) {
         this.orders = await this.$store.dispatch('orders/fetchOrders')
       }
+    },
+    async orderStatusFilter(value) {
+      this.orders = await this.$store.dispatch(
+        'orders/fetchOrdersByStatus',
+        value
+      )
     },
   },
   methods: {

@@ -80,6 +80,27 @@ export const actions = {
       throw e
     }
   },
+  async fetchOrdersByStatus({ commit }, statusName) {
+    const companyId = this.getters['company/companyId']
+    const ordersData = []
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .where('statusName', '==', statusName)
+        .get()
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            ordersData.push({ ...doc.data(), id: doc.id })
+          })
+        })
+      return ordersData
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
   async updateOrder({ commit }, order) {
     const companyId = this.getters['company/companyId']
     await setTimeout(() => {
