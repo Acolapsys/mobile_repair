@@ -3,17 +3,12 @@
     <v-card-title>Работы и материалы</v-card-title>
     <v-container>
       <v-row>
-        <v-col cols="2"
-          ><v-select
-            outlined
-            dense
-            :items="statuses"
-            :value="order.statusName"
-            style="font-size: 12px"
-            hide-details
-            @change="changeStatus"
-          ></v-select
-        ></v-col>
+        <v-col cols="2">
+          <OrderStatusSelector
+            :status-name="order.statusName"
+            :order-id="order.id"
+          />
+        </v-col>
       </v-row>
       <v-row>
         <v-col cols="6">
@@ -85,7 +80,6 @@
 </template>
 <script>
 import WorksAndParts from '@/components/Order/WorksAndParts'
-import { mapGetters } from 'vuex'
 export default {
   name: 'OrderEdit',
   components: {
@@ -105,9 +99,6 @@ export default {
     worksList: null,
     counter: 0,
   }),
-  computed: {
-    ...mapGetters('options', ['statuses']),
-  },
   async beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
     this.worksList = await this.$store.dispatch(
@@ -151,12 +142,6 @@ export default {
     cleanData() {
       this.work = null
       this.workPrice = null
-    },
-    async changeStatus(statusName) {
-      await this.$store.dispatch('orders/updateOrderStatus', {
-        orderId: this.order.id,
-        statusName,
-      })
     },
   },
 }
