@@ -183,7 +183,7 @@
           </v-form>
         </v-col>
       </v-row>
-      <Reception v-if="isPrinting" :order="order" />
+      <Reception v-if="isPrinting" :order="order" @close="close" />
     </v-container>
   </v-card>
 </template>

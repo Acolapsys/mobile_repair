@@ -2,8 +2,8 @@ export const actions = {
   async createOrder({ commit, dispatch }, order) {
     const companyId = this.getters['company/companyId']
     try {
-      const lastId = await dispatch('getLastId')
-      const newId = 'A' + (+lastId.match(/\d+/)[0] + 1)
+      const lastOrderId = await dispatch('getLastOrderId')
+      const newId = 'A' + (+lastOrderId.match(/\d+/)[0] + 1)
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
@@ -13,6 +13,7 @@ export const actions = {
           date: new Date().toLocaleDateString(),
           orderId: newId,
         })
+      await dispatch('updateLastOrderId', newId)
       return newId
     } catch (e) {
       console.log('error', e)
@@ -57,25 +58,30 @@ export const actions = {
       throw e
     }
   },
-  async getLastId({ commit }) {
+  async getLastOrderId({ commit }) {
     const companyId = this.getters['company/companyId']
     let lastId = ''
     try {
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
-        .collection('orders')
-        .orderBy('orderId', 'desc')
-        .limit(1)
         .get()
         .then((snapshot) => {
-          if (snapshot.docs.length) {
-            lastId = snapshot.docs[0].data().orderId
-          } else {
-            lastId = 'A0'
-          }
+          lastId = snapshot.data().lastOrderId || 'A0'
         })
       return lastId
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async updateLastOrderId({ commit }, lastOrderId) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .update({ lastOrderId })
     } catch (e) {
       commit('setError', e)
       throw e

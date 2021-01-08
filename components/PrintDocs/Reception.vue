@@ -325,7 +325,7 @@ export default {
     this.print()
   },
   methods: {
-    print() {
+    async print() {
       const cssText = `
       #printEl {
         display: block
@@ -336,7 +336,8 @@ export default {
       font-size: 11px;
       font-family: Verdana;
       }`
-      this.$Printd.print(document.querySelector('#printEl'), [cssText])
+      await this.$Printd.print(document.querySelector('#printEl'), [cssText])
+      this.$emit('close')
     },
   },
 }
