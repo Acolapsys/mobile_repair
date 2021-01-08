@@ -17,7 +17,6 @@ export default {
   props: {
     orderId: {
       type: String,
-      required: true,
     },
     statusName: {
       type: String,

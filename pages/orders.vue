@@ -56,7 +56,11 @@
         hide-details
       ></v-text-field>
     </v-row>
-    <OrdersTable :orders="orders" @dblClickOrder="openOrder" />
+    <OrdersTable
+      :orders="orders"
+      @dblClickOrder="openOrder"
+      @changeOrderStatus="updateOrders"
+    />
     <div v-if="isOpenedOrder" class="order_overlay">
       <div class="order_modal px-3">
         <Order :order="currentOrder" />
@@ -76,8 +80,7 @@ export default {
   },
   async asyncData({ store }) {
     await store.commit('orders/setOpenedOrder', false)
-    const orders = await store.dispatch('orders/fetchOrders')
-    return { orders }
+    await store.dispatch('orders/fetchOrders')
   },
   data: () => ({
     search: '',
@@ -85,27 +88,30 @@ export default {
     orderStatusFilter: null,
   }),
   computed: {
-    ...mapGetters({
-      isOpenedOrder: 'orders/isOpenedOrder',
-    }),
+    ...mapGetters('orders', ['isOpenedOrder', 'orders']),
   },
   watch: {
     async isOpenedOrder(value) {
       if (!value) {
-        this.orders = await this.$store.dispatch('orders/fetchOrders')
+        await this.updateOrders()
       }
     },
     async orderStatusFilter(value) {
-      this.orders = await this.$store.dispatch(
-        'orders/fetchOrdersByStatus',
-        value
-      )
+      await this.$store.dispatch('orders/fetchOrdersByStatus', value)
     },
   },
   methods: {
     openOrder(id = null) {
       this.currentOrder = this.orders.find((order) => order.id === id)
       this.$store.commit('orders/setOpenedOrder', true)
+    },
+    async updateOrders() {
+      this.orderStatusFilter
+        ? await this.$store.dispatch(
+            'orders/fetchOrdersByStatus',
+            this.orderStatusFilter
+          )
+        : await this.$store.dispatch('orders/fetchOrders')
     },
   },
 }

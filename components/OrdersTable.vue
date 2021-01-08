@@ -8,15 +8,7 @@
     @click:row="clickRow"
   >
     <template v-slot:item.statusName="{ item, value }">
-      <v-select
-        outlined
-        dense
-        :items="statuses"
-        :value="value"
-        style="font-size: 12px"
-        hide-details
-        @change="changeStatus"
-      ></v-select>
+      <OrderStatusSelector :status-name="value" :order-id="selectedOrderId" />
     </template>
     <template v-slot:item.created="{ item }">
       <span>{{ item.managerName }}</span>
@@ -69,6 +61,7 @@ export default {
         orderId: this.selectedOrderId,
         statusName,
       })
+      this.$emit('changeOrderStatus')
     },
     clickRow(item) {
       this.selectedOrderId = item.id
