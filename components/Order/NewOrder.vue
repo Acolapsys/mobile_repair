@@ -165,6 +165,12 @@
               </v-col>
             </v-row>
             <v-divider></v-divider>
+            <v-row class="ma-5">
+              <v-checkbox
+                v-model="printReception"
+                label="Печатать квитанцию"
+              ></v-checkbox>
+            </v-row>
             <v-row align="center" class="ma-5" style="font-size: 0.7rem">
               <v-btn depressed color="primary" class="mr-5" small type="submit">
                 Создать
@@ -177,10 +183,12 @@
           </v-form>
         </v-col>
       </v-row>
+      <Reception v-if="isPrinting" :order="order" />
     </v-container>
   </v-card>
 </template>
 <script>
+import Reception from '@/components/PrintDocs/Reception'
 import {
   required,
   minLength,
@@ -189,6 +197,7 @@ import {
 } from 'vuelidate/lib/validators'
 export default {
   name: 'NewOrder',
+  components: { Reception },
   validations: {
     clientName: { required },
     phoneNumber: {
@@ -214,6 +223,9 @@ export default {
       prepayment: 0,
       managerName: null,
       managers: ['Тимур Шакиров', 'Оператор'],
+      printReception: true,
+      isPrinting: false,
+      order: {},
     }
   },
   computed: {
@@ -273,12 +285,21 @@ export default {
         statusName: 'Новый',
         totalOrderPrice: 0,
       }
-      await this.$store.dispatch('orders/createOrder', orderData)
-      this.close()
+      const newId = await this.$store.dispatch('orders/createOrder', orderData)
+      if (this.printReception) {
+        this.order = {
+          ...orderData,
+          date: new Date().toLocaleDateString(),
+          orderId: newId,
+        }
+        this.isPrinting = true
+      } else {
+        this.close()
+      }
     },
     close() {
-      this.$store.commit('orders/setOpenedOrder', false)
       this.clearData()
+      this.$store.commit('orders/setOpenedOrder', false)
     },
     clearData() {
       this.clientName = ''

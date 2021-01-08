@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="printEl">
     <table
       style="width: 100%"
       border="0"
@@ -316,25 +316,45 @@
 <script>
 export default {
   props: {
-    orderId: String,
+    order: {
+      type: Object,
+      required: true,
+    },
   },
-  data: () => ({
-    order: {},
-  }),
-  async beforeMount() {
-    this.order = await this.$store.dispatch('orders/getOrder', this.orderId)
-    console.log(this.order)
+  mounted() {
+    this.print()
+  },
+  methods: {
+    print() {
+      const cssText = `
+      #printEl {
+        display: block
+      }
+      p { 
+      margin-bottom: 1px !important; 
+      margin-top: 1px !important; 
+      font-size: 11px;
+      font-family: Verdana;
+      }`
+      this.$Printd.print(document.querySelector('#printEl'), [cssText])
+    },
   },
 }
 </script>
 
 <style scoped>
+#printEl {
+  display: none;
+}
 p {
   margin-bottom: 2px !important;
 }
 @media print {
   p {
     margin-bottom: 2px !important;
+  }
+  #printEl {
+    display: block;
   }
 }
 </style>

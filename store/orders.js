@@ -13,6 +13,7 @@ export const actions = {
           date: new Date().toLocaleDateString(),
           orderId: newId,
         })
+      return newId
     } catch (e) {
       console.log('error', e)
       commit('setError', e)
