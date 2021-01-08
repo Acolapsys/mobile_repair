@@ -85,19 +85,20 @@ export const actions = {
     await setTimeout(() => {
       console.log(companyId, order)
     }, 1000)
-
-    // await this.$fire.firestore
-    //   .collection('users')
-    //   .doc(user.uid)
-    //   .collection('orders')
-    //   .add({
-    //     ...order,
-    //     date: new Date().toLocaleDateString(),
-    //     price: 0,
-    //   })
-    //   .then((ref) => {
-    //     console.log(ref)
-    //   })
+  },
+  async updateOrderStatus({ commit }, { orderId, statusName }) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .collection('orders')
+        .doc(orderId)
+        .update({ statusName })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
   },
   async addWork(
     { commit, dispatch },

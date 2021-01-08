@@ -5,15 +5,17 @@
     :search="search"
     class="pt-5"
     @dblclick:row="openOrder"
+    @click:row="clickRow"
   >
-    <template v-slot:item.statusName="{ item }">
+    <template v-slot:item.statusName="{ item, value }">
       <v-select
         outlined
         dense
         :items="statuses"
-        :value="item.statusName"
+        :value="value"
         style="font-size: 12px"
         hide-details
+        @change="changeStatus"
       ></v-select>
     </template>
     <template v-slot:item.created="{ item }">
@@ -56,10 +58,20 @@ export default {
       { text: 'Клиент', value: 'client' },
       { text: 'Цена', value: 'totalOrderPrice' },
     ],
+    selectedOrderId: null,
   }),
   methods: {
     openOrder(e, row) {
       this.$emit('dblClickOrder', row.item.id)
+    },
+    async changeStatus(statusName) {
+      await this.$store.dispatch('orders/updateOrderStatus', {
+        orderId: this.selectedOrderId,
+        statusName,
+      })
+    },
+    clickRow(item) {
+      this.selectedOrderId = item.id
     },
   },
   computed: {
