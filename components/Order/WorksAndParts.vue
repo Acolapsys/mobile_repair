@@ -44,7 +44,7 @@ export default {
       { text: 'Количество', value: 'workPrice', align: 'right' },
       { text: 'Цена, руб', value: 'workPrice', align: 'right' },
       { text: 'Сумма', value: 'workPrice', align: 'right' },
-      { text: '', value: 'actions', sortable: false, align: 'right' },
+      { text: 'Удалить', value: 'actions', sortable: false, align: 'right' },
     ],
     works: [],
   }),

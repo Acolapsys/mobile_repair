@@ -83,7 +83,6 @@ export default {
   methods: {
     async updateName() {
       await this.$store.dispatch('auth/updateName', this.name)
-      console.log(this.$store.getters['auth/userName'], 'user name')
     },
     async createCompany() {
       await this.$store.dispatch('company/createCompany', this.companyName)

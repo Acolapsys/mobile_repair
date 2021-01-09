@@ -34,7 +34,7 @@ export default {
       {
         text: 'Заказ №',
         align: 'start',
-        value: 'orderId',
+        value: 'orderLabel',
       },
       { text: 'Статус', value: 'statusName', width: '100' },
       { text: 'Создан', value: 'created' },

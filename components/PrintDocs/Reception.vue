@@ -25,7 +25,7 @@
       <span
         style="text-decoration: underline"
         data-mce-style="text-decoration: underline;"
-        >Квитанция&nbsp;<strong>{{ order.orderId }}</strong
+        >Квитанция&nbsp;<strong>{{ order.orderLabel }}</strong
         >&nbsp;от&nbsp;<em>{{ order.date }}</em></span
       >
     </p>
@@ -158,7 +158,7 @@
       <span
         style="text-decoration: underline"
         data-mce-style="text-decoration: underline;"
-        >Квитанция&nbsp;<strong>{{ order.orderId }}</strong
+        >Квитанция&nbsp;<strong>{{ order.orderLabel }}</strong
         >&nbsp;от&nbsp;<em>{{ order.date }}</em></span
       >
     </p>

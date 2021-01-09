@@ -14,7 +14,7 @@
         <NewPayment
           payment-type="income"
           :amount-prop="order.totalOrderPrice - order.prepayment"
-          :comment-prop="`Оплата по заказу #${order.orderId}`"
+          :comment-prop="`Оплата по заказу #${order.orderLabel}`"
           payment-article-prop="Оплата покупателя за товар/услугу"
           @close="closeModal"
         />
@@ -48,20 +48,23 @@ export default {
   },
   methods: {
     async changeStatus(statusName) {
+      if (statusName === 'Закрыт') {
+        this.closeOrder()
+      }
       await this.$store.dispatch('orders/updateOrderStatus', {
         orderId: this.orderId,
         statusName,
       })
-      this.$store.commit('orders/editOrder', {
+      this.$store.commit('orders/editOrderStatus', {
         orderId: this.orderId,
         statusName,
       })
-      if (statusName === 'Закрыт') {
-        this.isOpenedPayment = true
-      }
     },
     closeModal() {
       this.isOpenedPayment = false
+    },
+    closeOrder() {
+      this.isOpenedPayment = true
     },
   },
 }

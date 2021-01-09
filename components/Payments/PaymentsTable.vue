@@ -35,7 +35,6 @@
 <script>
 export default {
   async fetch({ store }) {
-    console.log('fetch')
     this.payments = await store.dispatch('payments/fetchPayments')
   },
   data: () => ({
@@ -54,7 +53,6 @@ export default {
     payments: [],
   }),
   async beforeMount() {
-    console.log('before')
     this.payments = await this.$store.dispatch('payments/fetchPayments')
   },
 }

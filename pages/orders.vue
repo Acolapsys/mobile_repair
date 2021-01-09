@@ -11,7 +11,7 @@
         color="success"
         class="mr-5"
         small
-        @click.stop="openOrder"
+        @click.stop="newOrder"
       >
         <v-icon left>mdi-plus</v-icon>
         Заказ
@@ -57,21 +57,21 @@
       ></v-text-field>
     </v-row>
     <OrdersTable @dblClickOrder="openOrder" @changeOrderStatus="updateOrders" />
-    <div v-if="isOpenedOrder" class="order_overlay">
+    <!-- <div v-if="isOpenedOrder" class="order_overlay">
       <div class="order_modal px-3">
         <Order :order="currentOrder" />
       </div>
-    </div>
+    </div> -->
   </v-container>
 </template>
 <script>
-import Order from '@/components/Order/Order'
+// import Order from '@/components/Order/Order'
 import OrdersTable from '@/components/OrdersTable'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Orders',
   components: {
-    Order,
+    // Order,
     OrdersTable,
   },
   async asyncData({ store }) {
@@ -100,6 +100,10 @@ export default {
     openOrder(id = null) {
       this.currentOrder = this.orders.find((order) => order.id === id)
       this.$store.commit('orders/setOpenedOrder', true)
+    },
+    newOrder() {
+      this.$store.dispatch('ui/setCurrentModalName', 'newOrder')
+      this.$store.dispatch('ui/setModal', true)
     },
     async updateOrders() {
       this.orderStatusFilter

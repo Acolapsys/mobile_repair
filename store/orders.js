@@ -2,8 +2,8 @@ export const actions = {
   async createOrder({ commit, dispatch }, order) {
     const companyId = this.getters['company/companyId']
     try {
-      const lastOrderId = await dispatch('getLastOrderId')
-      const newId = 'A' + (+lastOrderId.match(/\d+/)[0] + 1)
+      const lastOrderLabel = await dispatch('getLastOrderLabel')
+      const newLabel = 'A' + (+lastOrderLabel.match(/\d+/)[0] + 1)
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
@@ -11,10 +11,10 @@ export const actions = {
         .add({
           ...order,
           date: new Date().toLocaleDateString(),
-          orderId: newId,
+          orderLabel: newLabel,
         })
-      await dispatch('updateLastOrderId', newId)
-      return newId
+      await dispatch('updateLastOrderLabel', newLabel)
+      return newLabel
     } catch (e) {
       console.log('error', e)
       commit('setError', e)
@@ -55,26 +55,26 @@ export const actions = {
       throw e
     }
   },
-  async getLastOrderId({ commit }) {
+  async getLastOrderLabel({ commit }) {
     const companyId = this.getters['company/companyId']
     try {
       return await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
-        .then((snapshot) => snapshot.data().lastOrderId || 'A0')
+        .then((snapshot) => snapshot.data().lastOrderLabel || 'A0')
     } catch (e) {
       commit('setError', e)
       throw e
     }
   },
-  async updateLastOrderId({ commit }, lastOrderId) {
+  async updateLastOrderLabel({ commit }, lastOrderLabel) {
     const companyId = this.getters['company/companyId']
     try {
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
-        .update({ lastOrderId })
+        .update({ lastOrderLabel })
     } catch (e) {
       commit('setError', e)
       throw e
@@ -210,7 +210,7 @@ export const mutations = {
   setOrders(state, ordersData) {
     state.orders = ordersData
   },
-  editOrder(state, { orderId, statusName }) {
+  editOrderStatus(state, { orderId, statusName }) {
     state.orders = [
       ...state.orders.map((el) =>
         el.id === orderId ? { ...el, statusName } : el

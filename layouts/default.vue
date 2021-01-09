@@ -42,16 +42,20 @@
         <nuxt />
       </v-container>
     </v-main>
+    <NewOrder v-if="String(currentModalName) === 'newOrder'" @close="close" />
   </v-app>
 </template>
 
 <script>
+import NewOrder from '@/components/Order/NewOrder'
+import { mapGetters } from 'vuex'
 export default {
   middleware({ store, redirect }) {
     if (!store.getters['auth/isAuth']) {
       return redirect('/login')
     }
   },
+  components: { NewOrder },
   data() {
     return {
       menuItems: [
@@ -94,17 +98,24 @@ export default {
     }
   },
   computed: {
-    isAuth() {
-      return this.$store.getters['auth/isAuth']
-    },
-    name() {
-      return this.$store.getters['auth/userName'] || 'Оператор'
+    ...mapGetters('auth', ['isAuth', 'userName']),
+    currentModalName: {
+      get() {
+        return this.$store.getters['ui/currentModalName']
+      },
+      set(value) {
+        this.$store.dispatch('ui/setCurrentModalName', value)
+      },
     },
   },
   methods: {
     async logout() {
       await this.$store.dispatch('auth/logout')
       this.$router.push('/login')
+    },
+    close() {
+      this.$store.dispatch('ui/setModal', false)
+      this.currentModalName = ''
     },
   },
 }
