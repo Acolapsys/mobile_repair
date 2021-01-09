@@ -6,7 +6,7 @@
           <v-avatar size="100">
             <v-img src="avatar1.jpg"></v-img>
           </v-avatar>
-          <p class="mt-1 subheading text-center">{{ name }}</p>
+          <p class="mt-1 subheading text-center">{{ userName }}</p>
         </v-flex>
       </v-layout>
 
@@ -120,3 +120,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+*::-webkit-scrollbar {
+  width: 7px;
+}
+</style>

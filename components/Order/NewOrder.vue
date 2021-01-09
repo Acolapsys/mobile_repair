@@ -1,5 +1,5 @@
 <template>
-  <Modal :modal-name="newOrder">
+  <Modal modal-name="newOrder">
     <v-card width="100%" class="pa-3">
       <v-card-title>Новый заказ</v-card-title>
       <v-container>
