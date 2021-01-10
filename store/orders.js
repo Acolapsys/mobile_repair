@@ -199,14 +199,10 @@ export const actions = {
 }
 
 export const state = () => ({
-  isOpenedOrder: false,
   orders: [],
 })
 
 export const mutations = {
-  setOpenedOrder(state, modal) {
-    state.isOpenedOrder = modal
-  },
   setOrders(state, ordersData) {
     state.orders = ordersData
   },
@@ -218,8 +214,6 @@ export const mutations = {
     ]
   },
 }
-
 export const getters = {
-  isOpenedOrder: (state) => state.isOpenedOrder,
   orders: (state) => state.orders,
 }

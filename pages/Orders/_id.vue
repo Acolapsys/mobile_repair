@@ -91,6 +91,10 @@ import WorksAndParts from '@/components/Order/WorksAndParts'
 import Modal from '@/components/Modal'
 export default {
   name: 'OrderEdit',
+  layout: 'orders',
+  validate({ params }) {
+    return !!params.id
+  },
   components: {
     WorksAndParts,
     Modal,

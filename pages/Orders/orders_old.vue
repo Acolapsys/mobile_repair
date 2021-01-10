@@ -65,13 +65,11 @@
   </v-container>
 </template>
 <script>
-// import Order from '@/components/Order/Order'
 import OrdersTable from '@/components/OrdersTable'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Orders',
   components: {
-    // Order,
     OrdersTable,
   },
   async asyncData({ store }) {
@@ -123,20 +121,5 @@ export default {
 }
 .v-btn--outlined {
   border: 1px solid rgba(0, 0, 0, 0.3);
-}
-.order_overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.46);
-  z-index: 7;
-}
-.order_modal {
-  position: absolute;
-  right: 0;
-  left: auto;
-  top: 0;
-  overflow-y: hidden;
-  background-color: #fff;
-  width: 1000px;
 }
 </style>
