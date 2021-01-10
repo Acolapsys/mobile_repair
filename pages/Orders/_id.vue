@@ -89,6 +89,7 @@
 <script>
 import WorksAndParts from '@/components/Order/WorksAndParts'
 import Modal from '@/components/Modal'
+import { mapGetters } from 'vuex'
 export default {
   name: 'OrderEdit',
   layout: 'orders',
@@ -99,12 +100,6 @@ export default {
     WorksAndParts,
     Modal,
   },
-  props: {
-    order: {
-      type: Object,
-      required: true,
-    },
-  },
   data: () => ({
     managers: ['Тимур Шакиров', 'Оператор'],
     managerName: null,
@@ -113,7 +108,13 @@ export default {
     worksList: null,
     counter: 0,
   }),
-  async beforeMount() {
+  computed: {
+    ...mapGetters('orders', ['orderById']),
+    order() {
+      return this.orderById(this.$route.params.id)
+    },
+  },
+  async mounted() {
     this.managerName = this.$store.getters['auth/userName']
     this.worksList = await this.$store.dispatch(
       'orders/fetchWorks',
@@ -122,7 +123,9 @@ export default {
   },
   methods: {
     close() {
-      this.$store.commit('orders/setOpenedOrder', false)
+      this.$store.dispatch('ui/setModal', false)
+      this.currentModalName = ''
+      this.$router.go(-1)
     },
     async saveOrder() {
       const orderData = {}
@@ -135,7 +138,6 @@ export default {
         orderId: this.order.id,
         totalOrderPrice: this.order.totalOrderPrice,
       }
-
       await this.$store.dispatch('orders/addWork', workData)
       this.cleanData()
       this.counter++

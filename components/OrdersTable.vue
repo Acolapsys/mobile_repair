@@ -48,7 +48,12 @@ export default {
   }),
   methods: {
     openOrder(e, row) {
-      this.$emit('dblClickOrder', row.item.id)
+      // this.$emit('dblClickOrder', row.item.id)
+      // this.$store.dispatch('ui/setCurrentModalName', 'newOrder')
+      // this.$store.dispatch('ui/setModal', true)
+      this.$store.dispatch('ui/setCurrentModalName', 'orderEdit')
+      this.$store.dispatch('ui/setModal', true)
+      this.$router.push(`/orders/${row.item.id}`)
     },
     async changeStatus(statusName) {
       await this.$store.dispatch('orders/updateOrderStatus', {

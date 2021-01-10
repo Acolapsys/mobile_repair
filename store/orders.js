@@ -216,4 +216,5 @@ export const mutations = {
 }
 export const getters = {
   orders: (state) => state.orders,
+  orderById: (state) => (id) => state.orders.find((order) => order.id === id),
 }

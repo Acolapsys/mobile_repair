@@ -68,14 +68,14 @@
       </v-container>
     </v-main>
     <NewOrder v-if="String(currentModalName) === 'newOrder'" @close="close" />
-    <OrderEdit v-if="String(currentModalName) === 'orderEdit'" @close="close" />
+    <!-- <OrderEdit v-if="String(currentModalName) === 'orderEdit'" @close="close" /> -->
   </v-app>
 </template>
 
 <script>
 import Sidebar from '@/components/Sidebar'
 import NewOrder from '@/components/Order/NewOrder'
-import OrderEdit from '@/components/Order/OrderEdit'
+// import OrderEdit from '@/components/Order/OrderEdit'
 import OrdersTable from '@/components/OrdersTable'
 import { mapGetters } from 'vuex'
 export default {
@@ -84,7 +84,7 @@ export default {
       return redirect('/login')
     }
   },
-  components: { NewOrder, OrderEdit, OrdersTable, Sidebar },
+  components: { NewOrder, OrdersTable, Sidebar },
 
   data() {
     return {
@@ -123,7 +123,7 @@ export default {
       this.$store.dispatch('ui/setModal', false)
       this.currentModalName = ''
     },
-    openOrder(id = null) {
+    openOrder(id) {
       this.currentOrder = this.orders.find((order) => order.id === id)
       this.$store.commit('orders/setOpenedOrder', true)
     },
