@@ -9,14 +9,11 @@ export const actions = {
         .then((ref) => {
           companyId = ref.id
         })
-      await this.$fire.firestore
-        .collection('users')
-        .doc(uid)
-        .update({ companyId })
+      await this.$fire.firestore.collection('users').doc(uid).set({ companyId })
       await this.$fire.firestore
         .collection('companies')
         .doc(companyId)
-        .update({ users: [uid], bill: 0 })
+        .set({ users: [uid], bill: 0 })
         .then(() => {
           commit('setCompanyId', companyId)
         })
@@ -33,7 +30,7 @@ export const actions = {
         .doc(uid)
         .get()
         .then((res) => {
-          commit('setCompanyId', res.data().companyId)
+          commit('setCompanyId', res.data().companyId || '')
         })
     } catch (e) {
       console.log(e)
@@ -43,7 +40,7 @@ export const actions = {
   },
 }
 export const state = () => ({
-  company: null,
+  company: {},
 })
 export const mutations = {
   setCompanyId(state, id) {
