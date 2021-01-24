@@ -111,13 +111,15 @@ export default {
       type: String,
     },
   },
-  data: () => ({
-    managers: ['Тимур Шакиров', 'Оператор'],
-    amount: null,
-    comment: null,
-    paymentArticle: null,
-    managerName: null,
-  }),
+  data() {
+    return {
+      managers: ['Тимур Шакиров', 'Оператор'],
+      amount: null,
+      comment: null,
+      paymentArticle: null,
+      managerName: null,
+    }
+  },
   validations: {
     amount: { required },
     comment: { required },
@@ -172,7 +174,6 @@ export default {
         bill: newBill,
       }
       await this.$store.dispatch('payments/createPayment', paymentData)
-      await this.$store.dispatch('payments/updateBill', newBill)
       this.closeModal()
     },
   },

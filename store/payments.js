@@ -1,5 +1,5 @@
 export const actions = {
-  async createPayment({ commit }, payment) {
+  async createPayment({ commit, dispatch }, payment) {
     const companyId = this.getters['company/companyId']
     try {
       await this.$fire.firestore
@@ -7,6 +7,7 @@ export const actions = {
         .doc(companyId)
         .collection('payments')
         .add(payment)
+      await dispatch('payments/updateBill', +payment.bill, { root: true })
     } catch (e) {
       commit('setError', e)
       throw e
@@ -20,6 +21,7 @@ export const actions = {
         .collection('companies')
         .doc(companyId)
         .collection('payments')
+        .orderBy('date', 'desc')
         .get()
         .then((snapshot) => {
           snapshot.docs.forEach((doc) => {

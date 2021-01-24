@@ -14,6 +14,21 @@ export const actions = {
           orderLabel: newLabel,
         })
       await dispatch('updateLastOrderLabel', newLabel)
+      if (order.prepayment > 0) {
+        await dispatch(
+          'payments/createPayment',
+          {
+            type: 'income',
+            date: new Date().toLocaleDateString(),
+            amount: +order.prepayment,
+            comment: `Оплата клиента за заказ №${newLabel}`,
+            paymentArticle: 'Оплата покупателя за товар/услугу',
+            managerName: order.managerName,
+            bill: +this.getters['payments/bill'] + +order.prepayment,
+          },
+          { root: true }
+        )
+      }
       return newLabel
     } catch (e) {
       console.log('error', e)
@@ -29,6 +44,7 @@ export const actions = {
         .collection('companies')
         .doc(companyId)
         .collection('orders')
+        .orderBy('orderLabel', 'desc')
         .get()
         .then((snapshot) => {
           snapshot.docs.forEach((doc) => {

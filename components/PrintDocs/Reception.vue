@@ -59,7 +59,7 @@
                 order.estimatedPrice
               }}&nbsp;руб
             </p>
-            <p><strong>Аванс:</strong>&nbsp;{{ order.prepaiment }}</p>
+            <p><strong>Аванс:</strong>&nbsp;{{ order.prepayment }}</p>
             <p><strong>Заметки приемщика:</strong>&nbsp;{{ order.notes }}</p>
           </td>
         </tr>
