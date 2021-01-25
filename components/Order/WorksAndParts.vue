@@ -10,17 +10,15 @@
           @dblclick:row="openItem"
         >
           <template v-slot:item.actions="{ item }">
-            <v-btn icon
-              ><v-icon small @click="deleteWork(item)">
-                mdi-delete
-              </v-icon></v-btn
-            >
+            <v-btn icon>
+              <v-icon small @click="deleteWork(item)"> mdi-delete </v-icon>
+            </v-btn>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="5"></v-col>
+      <v-col cols="5" />
       <v-col cols="4">
         <p class="text-right">Итого сумма:</p>
       </v-col>

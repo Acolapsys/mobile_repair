@@ -6,9 +6,9 @@
       <v-container class="pa-6">
         <v-row>
           <span class="text-h4">Заказы</span>
-          <v-spacer></v-spacer>
+          <v-spacer />
         </v-row>
-        <v-divider></v-divider>
+        <v-divider />
         <v-row align="center" class="mt-5" style="font-size: 0.7rem">
           <v-btn
             depressed
@@ -17,7 +17,7 @@
             small
             @click.stop="newOrder"
           >
-            <v-icon left>mdi-plus</v-icon>
+            <v-icon left> mdi-plus </v-icon>
             Заказ
           </v-btn>
           <v-btn
@@ -47,7 +47,7 @@
           >
             Ждет запчасть
           </v-btn>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-text-field
             v-model="search"
             label="Поиск"
@@ -58,7 +58,7 @@
             style="max-width: 300px"
             single-line
             hide-details
-          ></v-text-field>
+          />
         </v-row>
         <OrdersTable
           @dblClickOrder="openOrder"

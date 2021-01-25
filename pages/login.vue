@@ -8,20 +8,22 @@
         :error-messages="emailError"
         label="Почта"
         required
-      ></v-text-field>
+      />
       <v-text-field
         v-model="password"
         type="password"
         :error-messages="passwordErrors"
         label="Пароль"
         required
-      ></v-text-field>
+      />
 
       <v-card-actions>
         <v-btn class="mr-4" type="submit" large> Войти </v-btn>
       </v-card-actions>
     </v-form>
-    <v-snackbar v-model="snackbar">{{ alertMessage }}</v-snackbar>
+    <v-snackbar v-model="snackbar">
+      {{ alertMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 

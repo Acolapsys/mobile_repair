@@ -107,7 +107,7 @@
           <td style="width: 50%" valign="top" data-mce-style="width: 50%;">
             <p>Приемщик: _____________________&nbsp;{{ order.managerName }}</p>
           </td>
-          <td></td>
+          <td />
           <td>
             <p style="text-align: right" data-mce-style="text-align: right;">
               _____________________ {{ order.clientName }}
@@ -267,7 +267,7 @@
         left: 3.5px;
         top: 3.5px;
       "
-    ></div>
+    />
     <div
       id="mceResizeHandlene"
       data-mce-bogus="all"
@@ -281,7 +281,7 @@
         left: 675.5px;
         top: 3.5px;
       "
-    ></div>
+    />
     <div
       id="mceResizeHandlese"
       data-mce-bogus="all"
@@ -295,7 +295,7 @@
         left: 675.5px;
         top: 67.5px;
       "
-    ></div>
+    />
     <div
       id="mceResizeHandlesw"
       data-mce-bogus="all"
@@ -309,7 +309,7 @@
         left: 3.5px;
         top: 67.5px;
       "
-    ></div>
+    />
   </div>
 </template>
 

@@ -8,7 +8,7 @@
       style="font-size: 12px"
       hide-details
       @change="changeStatus"
-    ></v-select>
+    />
     <div v-if="isOpenedPayment" class="payment_overlay">
       <div class="payment_modal px-3">
         <NewPayment

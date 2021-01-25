@@ -5,14 +5,14 @@
         <span class="display-1">{{
           paymentType === 'income' ? 'Приход денег' : 'Расход денег'
         }}</span>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn icon @click.stop="closeModal">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-row>
-      <v-divider></v-divider>
+      <v-divider />
       <v-row class="mt-5">
-        <v-spacer></v-spacer>
+        <v-spacer />
         <span class="label-title mr-1">Сумма, руб:</span>
       </v-row>
       <v-row class="my-3 d-flex align-center">
@@ -22,7 +22,7 @@
             : 'Списание денег из кассы'
         }}</span>
         <span class="red--text">*</span>
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <v-text-field
           v-model="amount"
@@ -31,9 +31,9 @@
           dense
           class="amount_input"
           required
-        ></v-text-field>
+        />
       </v-row>
-      <v-divider></v-divider>
+      <v-divider />
       <v-row class="mt-5">
         <span class="label-title">Комментарий</span
         ><span class="red--text">*</span>
@@ -45,7 +45,7 @@
           height="100"
           outlined
           class="ma-1"
-        ></v-textarea>
+        />
       </v-row>
       <v-row>
         <span class="label-title">Статья</span><span class="red--text">*</span>
@@ -58,8 +58,7 @@
             outlined
             dense
             required
-          >
-          </v-select>
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -73,8 +72,7 @@
             outlined
             dense
             required
-          >
-          </v-select>
+          />
         </v-col>
       </v-row>
       <v-row align="center" style="font-size: 0.7rem">
@@ -84,7 +82,7 @@
         <v-btn depressed small class="mr-2" @click="closeModal">
           Закрыть
         </v-btn>
-        <v-spacer></v-spacer>
+        <v-spacer />
       </v-row>
     </v-form>
   </v-container>

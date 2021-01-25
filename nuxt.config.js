@@ -19,7 +19,7 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     { src: '~/plugins/vuelidate' },
-    { src: "~/plugins/printd", ssr: false }
+    { src: '~/plugins/printd', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -28,13 +28,13 @@ export default {
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    ['@nuxtjs/eslint-module', {
-      fix: true
-    }],
+    ['@nuxtjs/eslint-module', {}],
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
-    //dotenv
+    // dotenv
     '@nuxtjs/dotenv',
+    // typescript
+    '@nuxt/typescript-build',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -45,7 +45,7 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
-    //firebase config
+    // firebase config
     [
       '@nuxtjs/firebase',
       {
@@ -55,24 +55,21 @@ export default {
           projectId: process.env.PROJECT_ID,
           storageBucket: process.env.STORAGE_BUCKET,
           messagingSenderId: process.env.MESSAGING_SENDER_ID,
-          appId: process.env.APP_ID
+          appId: process.env.APP_ID,
         },
         services: {
           auth: {
             persistence: 'local', // default
             initialize: {
               onAuthStateChangedMutation: 'auth/ON_AUTH_STATE_CHANGED_MUTATION',
-              subscribeManually: false
+              subscribeManually: false,
             },
-            ssr: true
+            ssr: true,
           },
-          firestore: {
-            
-          }
-        }
-      }
-    ]
-    
+          firestore: {},
+        },
+      },
+    ],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -97,14 +94,17 @@ export default {
           success: colors.green.accent3,
         },
       },
-    }
-
+    },
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {
-
-  }
-  
-
+  build: {},
+  // typescript lint config for autofix
+  typescript: {
+    typeCheck: {
+      eslint: {
+        files: './**/*.{ts,js,vue}',
+      },
+    },
+  },
 }

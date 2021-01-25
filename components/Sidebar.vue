@@ -3,13 +3,15 @@
     <v-layout column align-center>
       <v-flex class="mt-5">
         <v-avatar size="100">
-          <v-img src="avatar1.jpg"></v-img>
+          <v-img src="avatar1.jpg" />
         </v-avatar>
-        <p class="mt-1 subheading text-center">{{ userName }}</p>
+        <p class="mt-1 subheading text-center">
+          {{ userName }}
+        </p>
       </v-flex>
     </v-layout>
 
-    <v-divider></v-divider>
+    <v-divider />
     <v-list nav>
       <v-list-item v-for="(item, i) in menuItems" :key="i" :to="item.to" exact>
         <v-list-item-action>
@@ -19,7 +21,7 @@
           <v-list-item-title v-text="item.title" />
         </v-list-item-content>
       </v-list-item>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-list-item @click="logout">
         <v-list-item-action>
           <v-icon>mdi-exit</v-icon>

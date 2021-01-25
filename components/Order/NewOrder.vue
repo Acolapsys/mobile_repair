@@ -7,12 +7,14 @@
           <v-col cols="6">
             <v-form @submit.prevent="createOrder">
               <v-row class="pt-5" align="center">
-                <v-col col="2" class="col-left"> </v-col>
-                <v-col col="4"><h4>Клиент</h4></v-col>
+                <v-col col="2" class="col-left" />
+                <v-col col="4">
+                  <h4>Клиент</h4>
+                </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Имя клиента</span><span class="red--text">*</span>
+                <v-col col="2" class="col-left">
+                  <span>Имя клиента</span><span class="red--text">*</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -22,12 +24,12 @@
                     required
                     :hide-details="!nameErrors"
                     :error-messages="nameErrors"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Телефон</span><span class="red--text">*</span>
+                <v-col col="2" class="col-left">
+                  <span>Телефон</span><span class="red--text">*</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -37,19 +39,19 @@
                     required
                     :hide-details="!phoneErrors"
                     :error-messages="phoneErrors"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
-              <v-divider></v-divider>
+              <v-divider />
               <v-row class="pt-5" align="center">
-                <v-col col="2" class="col-left"> </v-col>
-                <v-col col="4"
-                  ><h4 color="blue--text">Изделие и неисправности</h4></v-col
-                >
+                <v-col col="2" class="col-left" />
+                <v-col col="4">
+                  <h4 color="blue--text">Изделие и неисправности</h4>
+                </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Тип устройства</span>
+                <v-col col="2" class="col-left">
+                  <span>Тип устройства</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -57,23 +59,25 @@
                     outlined
                     dense
                     hide-details
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"><span>Бренд</span> </v-col>
+                <v-col col="2" class="col-left">
+                  <span>Бренд</span>
+                </v-col>
                 <v-col col="4">
                   <v-text-field
                     v-model="brandName"
                     outlined
                     dense
                     hide-details
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Модель</span><span class="red--text">*</span>
+                <v-col col="2" class="col-left">
+                  <span>Модель</span><span class="red--text">*</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -83,12 +87,12 @@
                     required
                     :hide-details="!modelErrors"
                     :error-messages="modelErrors"
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Неисправность</span><span class="red--text">*</span>
+                <v-col col="2" class="col-left">
+                  <span>Неисправность</span><span class="red--text">*</span>
                 </v-col>
                 <v-col col="4">
                   <v-textarea
@@ -98,12 +102,12 @@
                     required
                     :hide-details="!malfunctionErrors"
                     :error-messages="malfunctionErrors"
-                  ></v-textarea>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Внешний вид</span>
+                <v-col col="2" class="col-left">
+                  <span>Внешний вид</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -111,27 +115,27 @@
                     outlined
                     dense
                     hide-details
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row class="pt-5" align="center">
-                <v-col col="2" class="col-left"> </v-col>
-                <v-col col="4"
-                  ><h4 color="blue--text">Дополнительная информация</h4></v-col
-                >
+                <v-col col="2" class="col-left" />
+                <v-col col="4">
+                  <h4 color="blue--text">Дополнительная информация</h4>
+                </v-col>
               </v-row>
 
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Заметки приемщика</span>
+                <v-col col="2" class="col-left">
+                  <span>Заметки приемщика</span>
                 </v-col>
                 <v-col col="4">
-                  <v-textarea v-model="notes" outlined rows="3"></v-textarea>
+                  <v-textarea v-model="notes" outlined rows="3" />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"
-                  ><span>Ориентировочная цена</span>
+                <v-col col="2" class="col-left">
+                  <span>Ориентировочная цена</span>
                 </v-col>
                 <v-col col="4">
                   <v-text-field
@@ -140,12 +144,14 @@
                     dense
                     number
                     hide-details
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
-              <v-divider></v-divider>
+              <v-divider />
               <v-row align="center">
-                <v-col col="2" class="col-left"><span>Предоплата</span> </v-col>
+                <v-col col="2" class="col-left">
+                  <span>Предоплата</span>
+                </v-col>
                 <v-col col="4">
                   <v-text-field
                     v-model="prepayment"
@@ -153,26 +159,28 @@
                     dense
                     number
                     hide-details
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-row>
               <v-row align="center">
-                <v-col col="2" class="col-left"><span>Менеджер</span> </v-col>
+                <v-col col="2" class="col-left">
+                  <span>Менеджер</span>
+                </v-col>
                 <v-col col="4">
                   <v-select
                     v-model="managerName"
                     :items="managers"
                     outlined
                     hide-details
-                  ></v-select>
+                  />
                 </v-col>
               </v-row>
-              <v-divider></v-divider>
+              <v-divider />
               <v-row class="ma-5">
                 <v-checkbox
                   v-model="printReception"
                   label="Печатать квитанцию"
-                ></v-checkbox>
+                />
               </v-row>
               <v-row align="center" class="ma-5" style="font-size: 0.7rem">
                 <v-btn
@@ -187,7 +195,7 @@
                 <v-btn depressed small class="mr-2" @click="close">
                   Закрыть
                 </v-btn>
-                <v-spacer></v-spacer>
+                <v-spacer />
               </v-row>
             </v-form>
           </v-col>

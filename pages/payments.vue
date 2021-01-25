@@ -3,7 +3,7 @@
     <v-row>
       <span class="text-h4">Платежи</span>
     </v-row>
-    <v-divider></v-divider>
+    <v-divider />
     <v-row>
       <v-col cols="4">
         <v-sheet
@@ -18,11 +18,11 @@
           </div>
           <div class="buttons">
             <v-btn color="success" class="mr-5" @click.stop="createIncome">
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon left> mdi-plus </v-icon>
               Приход
             </v-btn>
             <v-btn color="red lighten-2" dark @click.stop="createOutcome">
-              <v-icon left>mdi-minus</v-icon>
+              <v-icon left> mdi-minus </v-icon>
               Расход
             </v-btn>
           </div>
