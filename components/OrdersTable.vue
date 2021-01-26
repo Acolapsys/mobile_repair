@@ -54,6 +54,7 @@ export default {
       this.$store.dispatch('ui/setCurrentModalName', 'orderEdit')
       this.$store.dispatch('ui/setModal', true)
       this.$router.push(`/orders/${row.item.id}`)
+      console.log(e)
     },
     async changeStatus(statusName) {
       await this.$store.dispatch('orders/updateOrderStatus', {

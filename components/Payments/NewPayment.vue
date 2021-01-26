@@ -89,7 +89,7 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'NewPayment',
   props: {
@@ -125,22 +125,12 @@ export default {
     managerName: { required },
   },
   computed: {
-    ...mapGetters('payments', ['bill']),
+    ...mapState('payments', ['bill', 'incomeArticles', 'outcomeArticles']),
     types() {
       if (this.paymentType === 'income') {
-        return ['Оплата покупателя за товар/услугу', 'Прочий приход денег']
+        return this.incomeArticles
       } else {
-        return [
-          'Выплата зарплаты',
-          'Прочий расход денег',
-          'Оплата поставщикам товаров/запчастей',
-          'Возврат денег покупателю',
-          'Выплата прибыли',
-          'Оплата аренды',
-          'Оплата коммунальных расходов',
-          'Оплата рекламы',
-          'Выплата налогов',
-        ]
+        return this.outcomeArticles
       }
     },
   },

@@ -31,7 +31,6 @@ export const actions = {
       }
       return newLabel
     } catch (e) {
-      console.log('error', e)
       commit('setError', e)
       throw e
     }
@@ -118,10 +117,15 @@ export const actions = {
     }
   },
   async updateOrder({ commit }, order) {
-    const companyId = this.getters['company/companyId']
-    await setTimeout(() => {
-      console.log(companyId, order)
-    }, 1000)
+    try {
+      const companyId = this.getters['company/companyId']
+      await setTimeout(() => {
+        console.log(companyId, order)
+      }, 1000)
+    } catch (e) {
+      commit('setError', { root: true })
+      throw e
+    }
   },
   async updateOrderStatus({ commit }, { orderId, statusName }) {
     const companyId = this.getters['company/companyId']

@@ -78,6 +78,10 @@ export default {
     companyName: null,
     status: null,
   }),
+  computed: {
+    ...mapGetters('company', ['isCompanyExist']),
+    ...mapGetters('options', ['statuses']),
+  },
   methods: {
     async updateName() {
       await this.$store.dispatch('auth/updateName', this.name)
@@ -89,10 +93,6 @@ export default {
       await this.$store.dispatch('options/addStatus', this.status)
       this.status = null
     },
-  },
-  computed: {
-    ...mapGetters('company', ['isCompanyExist']),
-    ...mapGetters('options', ['statuses']),
   },
 }
 </script>

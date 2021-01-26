@@ -39,7 +39,6 @@ export const actions = {
         .update({ userName: name })
         .then(() => commit('setUserName', name))
     } catch (e) {
-      console.log(e)
       commit('setError', e)
       throw e
     }

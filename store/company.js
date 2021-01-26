@@ -33,7 +33,6 @@ export const actions = {
           commit('setCompanyId', res.data().companyId || '')
         })
     } catch (e) {
-      console.log(e)
       commit('setError', e)
       throw e
     }

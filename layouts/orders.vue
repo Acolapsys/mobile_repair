@@ -93,10 +93,6 @@ export default {
       orderStatusFilter: null,
     }
   },
-  async beforeMount() {
-    this.$store.dispatch('ui/setModal', false)
-    await this.$store.dispatch('orders/fetchOrders')
-  },
   computed: {
     ...mapGetters('auth', ['isAuth']),
     ...mapGetters('orders', ['orders']),
@@ -113,6 +109,10 @@ export default {
     async orderStatusFilter(value) {
       await this.$store.dispatch('orders/fetchOrdersByStatus', value)
     },
+  },
+  async beforeMount() {
+    this.$store.dispatch('ui/setModal', false)
+    await this.$store.dispatch('orders/fetchOrders')
   },
   methods: {
     async logout() {

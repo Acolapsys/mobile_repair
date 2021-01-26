@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     openItem(e, row) {
+      console.log(e)
       this.$emit('dblClickOrder', row.item.id)
     },
     deleteWork(work) {

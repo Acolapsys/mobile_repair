@@ -115,7 +115,8 @@ export default Vue.extend({
       workPrice: 0,
       worksList: null,
       counter: 0,
-  }},
+    }
+  },
   computed: {
     ...mapGetters('orders', ['orderById']),
     order(): Order {

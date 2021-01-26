@@ -62,15 +62,53 @@ export const actions = {
       throw e
     }
   },
+  async fetchIncomeArticles({ commit }) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .get()
+        .then((res) => {
+          commit('setIncomeArticles', res.data().incomeArticles)
+        })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
+  async fetchOutcomeArticles({ commit }) {
+    const companyId = this.getters['company/companyId']
+    try {
+      await this.$fire.firestore
+        .collection('companies')
+        .doc(companyId)
+        .get()
+        .then((res) => {
+          commit('setOutcomeArticles', res.data().outcomeArticles)
+        })
+    } catch (e) {
+      commit('setError', e)
+      throw e
+    }
+  },
 }
 
 export const state = () => ({
   bill: null,
+  incomeArticles: [],
+  outcomeArticles: [],
 })
 
 export const mutations = {
   setBill(state, bill) {
     state.bill = bill
+  },
+  setIncomeArticles(state, incomeArticles) {
+    state.incomeArticles = incomeArticles
+  },
+  setOutcomeArticles(state, outcomeArticles) {
+    state.outcomeArticles = outcomeArticles
   },
 }
 
