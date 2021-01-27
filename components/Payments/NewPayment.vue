@@ -87,37 +87,31 @@
     </v-form>
   </v-container>
 </template>
-<script>
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+@Component
 import { required } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
-export default {
-  name: 'NewPayment',
-  props: {
-    paymentType: {
-      // расходы, либо доходы
-      type: String,
+export default class NewPayment extends Vue  {
+  managers: Array<string> = ['Тимур Шакиров', 'Оператор']
+  amount: number = 0
+  comment: string = ''
+  paymentArticle: string = ''
+  managerName: string = ''
+    @Prop({type: String,
       required: true,
-      default: 'income',
-    },
-    amountProp: {
-      type: Number,
-    },
-    commentProp: {
-      type: String,
-    },
-    paymentArticleProp: {
-      type: String,
-    },
-  },
-  data() {
-    return {
-      managers: ['Тимур Шакиров', 'Оператор'],
-      amount: null,
-      comment: null,
-      paymentArticle: null,
-      managerName: null,
+      default: 'income'}) paymentType!: string
+    @Prop({type: Number}) amountProp!: number
+    @Prop({type: String}) commentProp!: string
+    @Prop({type: String}) paymentArticleProp!: string
+  
+    get types() {
+      if (this.paymentType === 'income') {
+        return this.incomeArticles
+      } else {
+        return this.outcomeArticles
+      }
     }
-  },
   validations: {
     amount: { required },
     comment: { required },
@@ -126,13 +120,6 @@ export default {
   },
   computed: {
     ...mapState('payments', ['bill', 'incomeArticles', 'outcomeArticles']),
-    types() {
-      if (this.paymentType === 'income') {
-        return this.incomeArticles
-      } else {
-        return this.outcomeArticles
-      }
-    },
   },
   beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
