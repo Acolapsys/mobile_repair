@@ -20,6 +20,7 @@ export default {
   plugins: [
     { src: '~/plugins/vuelidate' },
     { src: '~/plugins/printd', ssr: false },
+    { src: '~/plugins/firebase.ts' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

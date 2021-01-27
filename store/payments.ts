@@ -1,12 +1,20 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-
-
+import { ActionContext } from 'vuex'
+import { $fire } from '~/utils/api'
 
 enum incomeArticle {
-
+  'Оплата покупателя за товар/услугу',
+  'Прочий приход денег',
 }
 enum outcomeArticle {
-  
+  'Выплата зарплаты',
+  'Прочий расход денег',
+  'Оплата поставщикам товаров/запчастей',
+  'Выплата прибыли',
+  'Оплата аренды',
+  'Оплата коммунальных расходов',
+  'Оплата рекламы',
+  'Выплата налогов',
 }
 
 interface Payment {
@@ -17,44 +25,43 @@ interface Payment {
   paymentArticle: incomeArticle | outcomeArticle
   managerName: string
   bill: number
+  id: string
 }
-
-
-
-
-
 @Module({
   name: 'payments',
   stateFactory: true,
-  namespaced: true
+  namespaced: true,
 })
-
 export default class Payments extends VuexModule {
- 
-    public bill: number = 0
-    public incomeArticles: Array<string> = []
-    public outcomeArticles: Array<string> = []
+  public bill: number = 0
+  public incomeArticles: Array<incomeArticle> = []
+  public outcomeArticles: Array<outcomeArticle> = []
 
   @Action
-  public async createPayment( payment: Object) {
-    const companyId = this.context.getters['company/companyId']
+  public async createPayment(
+    payment: Payment,
+    { dispatch, commit, getters }: ActionContext<any, any>
+  ) {
+    const companyId: string = getters['company/companyId']
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .collection('payments')
         .add(payment)
-      await this.context.dispatch('payments/updateBill', payment.bill, { root: true })
+      await dispatch('payments/updateBill', payment.bill)
     } catch (e) {
       commit('setError', e)
       throw e
     }
-  },
-  async fetchPayments({ commit }) {
-    const companyId = this.getters['company/companyId']
-    const paymentsData = []
+  }
+
+  @Action
+  public async fetchPayments({ commit, getters }: ActionContext<any, any>) {
+    const companyId = getters['company/companyId']
+    const paymentsData: Array<Payment> = []
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .collection('payments')
@@ -62,7 +69,7 @@ export default class Payments extends VuexModule {
         .get()
         .then((snapshot) => {
           snapshot.docs.forEach((doc) => {
-            paymentsData.push({ ...doc.data(), id: doc.id })
+            return paymentsData.push({ ...doc.data(), id: doc.id })
           })
         })
       return paymentsData
@@ -70,26 +77,35 @@ export default class Payments extends VuexModule {
       commit('setError', e)
       throw e
     }
-  },
-  async getBill({ commit }) {
-    const companyId = this.getters['company/companyId']
+  }
+
+  @Action
+  public async getBill({ commit, getters }: ActionContext<any, any>) {
+    const companyId = getters['company/companyId']
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
         .then((res) => {
-          commit('setBill', res.data().bill)
+          if (res.exists) {
+            commit('setBill', res?.data().bill)
+          }
         })
     } catch (e) {
       commit('setError', e)
       throw e
     }
-  },
-  async updateBill({ commit }, newBill) {
-    const companyId = this.getters['company/companyId']
+  }
+
+  @Action
+  public async updateBill(
+    newBill: number,
+    { commit, getters }: ActionContext<any, any>
+  ) {
+    const companyId = getters['company/companyId']
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .update({ bill: newBill })
@@ -98,54 +114,64 @@ export default class Payments extends VuexModule {
       commit('setError', e)
       throw e
     }
-  },
-  async fetchIncomeArticles({ commit }) {
-    const companyId = this.getters['company/companyId']
+  }
+
+  @Action
+  public async fetchIncomeArticles({
+    commit,
+    getters,
+  }: ActionContext<any, any>) {
+    const companyId = getters['company/companyId']
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
         .then((res) => {
-          commit('setIncomeArticles', res.data().incomeArticles)
+          if (res.exists) {
+            commit('setIncomeArticles', res?.data().incomeArticles)
+          }
         })
     } catch (e) {
       commit('setError', e)
       throw e
     }
-  },
-  async fetchOutcomeArticles({ commit }) {
-    const companyId = this.getters['company/companyId']
+  }
+
+  @Action
+  public async fetchOutcomeArticles({
+    commit,
+    getters,
+  }: ActionContext<any, any>) {
+    const companyId = getters['company/companyId']
     try {
-      await this.$fire.firestore
+      await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
         .then((res) => {
-          commit('setOutcomeArticles', res.data().outcomeArticles)
+          if (res.exists) {
+            commit('setOutcomeArticles', res?.data().outcomeArticles)
+          }
         })
     } catch (e) {
       commit('setError', e)
       throw e
     }
-  },
-}
+  }
 
+  @Mutation
+  public setBill(bill: number) {
+    this.bill = bill
+  }
 
+  @Mutation
+  public setIncomeArticles(incomeArticles: Array<incomeArticle>) {
+    this.incomeArticles = incomeArticles
+  }
 
-export const mutations = {
-  setBill(state, bill) {
-    state.bill = bill
-  },
-  setIncomeArticles(state, incomeArticles) {
-    state.incomeArticles = incomeArticles
-  },
-  setOutcomeArticles(state, outcomeArticles) {
-    state.outcomeArticles = outcomeArticles
-  },
-}
-
-export const getters = {
-  bill: (s) => s.bill,
-}
+  @Mutation
+  public setOutcomeArticles(outcomeArticles: Array<outcomeArticle>) {
+    this.outcomeArticles = outcomeArticles
+  }
 }
