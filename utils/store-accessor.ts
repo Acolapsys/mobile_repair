@@ -7,5 +7,4 @@ let paymentsStore: payments
 function initialiseStores(store: Store<any>): void {
   paymentsStore = getModule(payments, store)
 }
-
 export { initialiseStores, paymentsStore }

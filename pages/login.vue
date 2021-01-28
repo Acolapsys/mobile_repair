@@ -30,6 +30,8 @@
 <script>
 import { email, required, minLength } from 'vuelidate/lib/validators'
 import messages from '@/plugins/messages'
+
+import { paymentsStore } from '~/store'
 export default {
   layout: 'login',
   name: 'Login',
@@ -88,16 +90,31 @@ export default {
         password: this.password,
       }
       try {
-        await this.$store.dispatch('auth/login', formData)
-        await this.$store.dispatch('company/getCompanyId')
-        await this.$store.dispatch('auth/getUserName')
-        await this.$store.dispatch('payments/getBill')
-        await this.$store.dispatch('options/fetchStatuses')
-        await this.$store.dispatch('payments/fetchOutcomeArticles')
-        await this.$store.dispatch('payments/fetchIncomeArticles')
+        await this.$store.dispatch('auth/login', formData).then(() => {
+          console.log('login')
+        })
+        await this.$store.dispatch('company/getCompanyId').then(() => {
+          console.log('companyId')
+        })
+        await this.$store.dispatch('auth/getUserName').then(() => {
+          console.log('userName')
+        })
+        await paymentsStore.getBill().then(() => {
+          console.log('getBill')
+        })
+        await this.$store.dispatch('options/fetchStatuses').then(() => {
+          console.log('statuses')
+        })
+        await this.$store.dispatch('payments/fetchOutcomeArticles').then(() => {
+          console.log('outcome')
+        })
+        await this.$store.dispatch('payments/fetchIncomeArticles').then(() => {
+          console.log('income')
+        })
         this.$router.push('/orders')
       } catch (e) {
         this.alertMessage = messages[this.error.code] || 'Что-то пошло не так'
+        console.log(e)
         this.snackbar = true
       }
     },

@@ -30,7 +30,7 @@
       </v-col>
       <v-col cols="8">
         <h5 class="title">Движение средств</h5>
-        <PaymentsTable :key="counter" />
+        <!-- <PaymentsTable :key="counter" /> -->
       </v-col>
     </v-row>
     <div v-if="isOpenedPayment" class="payment_overlay">
@@ -40,41 +40,54 @@
     </div>
   </v-container>
 </template>
-<script>
-import PaymentsTable from '@/components/Payments/PaymentsTable'
-import NewPayment from '@/components/Payments/NewPayment'
-import { mapGetters } from 'vuex'
-export default {
+<script lang="ts">
+// import PaymentsTable from '@/components/Payments/PaymentsTable.vue'
+import NewPayment from '@/components/Payments/NewPayment.vue'
+
+import { Vue, Component } from 'nuxt-property-decorator'
+
+import { paymentsStore } from '~/store'
+@Component({
   components: {
-    PaymentsTable,
+    // PaymentsTable,
     NewPayment,
   },
-  data: () => ({
-    isOpenedPayment: false,
-    paymentType: null,
-    counter: 0,
-  }),
-  computed: {
-    ...mapGetters('payments', ['bill']),
-  },
+})
+export default class Payments extends Vue {
+  isOpenedPayment: boolean = false
+  paymentType: string = ''
+  counter: number = 0
+
+  get bill(): number {
+    return paymentsStore.bill
+  }
+
   beforeMount() {
     this.isOpenedPayment = false
-  },
-  methods: {
-    createIncome() {
-      this.paymentType = 'income'
-      this.isOpenedPayment = true
-    },
-    createOutcome() {
-      this.paymentType = 'outcome'
-      this.isOpenedPayment = true
-    },
-    closeModal() {
-      this.paymentType = ''
-      this.isOpenedPayment = false
-      this.counter++
-    },
-  },
+  }
+
+  async mounted() {
+    await paymentsStore.getBill()
+  }
+
+  createPayment(type: string) {
+    this.paymentType = type
+    this.isOpenedPayment = true
+  }
+
+  createIncome() {
+    this.createPayment('income')
+  }
+
+  createOutcome() {
+    this.createPayment('outcome')
+  }
+
+  closeModal() {
+    this.paymentType = ''
+    this.isOpenedPayment = false
+    this.counter++
+  }
 }
 </script>
 <style lang="scss" scoped>

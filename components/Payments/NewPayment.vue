@@ -88,70 +88,77 @@
   </v-container>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
+// import { required } from 'vuelidate/lib/validators'
+import { paymentsStore } from '~/store'
+import { Article, incomeArticle, outcomeArticle } from '~/store/payments'
 @Component
-import { required } from 'vuelidate/lib/validators'
-import { mapState } from 'vuex'
-export default class NewPayment extends Vue  {
+export default class NewPayment extends Vue {
   managers: Array<string> = ['Тимур Шакиров', 'Оператор']
   amount: number = 0
   comment: string = ''
-  paymentArticle: string = ''
+  paymentArticle: unknown = ''
   managerName: string = ''
-    @Prop({type: String,
-      required: true,
-      default: 'income'}) paymentType!: string
-    @Prop({type: Number}) amountProp!: number
-    @Prop({type: String}) commentProp!: string
-    @Prop({type: String}) paymentArticleProp!: string
-  
-    get types() {
-      if (this.paymentType === 'income') {
-        return this.incomeArticles
-      } else {
-        return this.outcomeArticles
-      }
+  @Prop({ type: String, required: true, default: 'income' })
+  paymentType!: string
+
+  @Prop({ type: Number }) amountProp!: number
+  @Prop({ type: String }) commentProp!: string
+  @Prop({ type: String }) paymentArticleProp!: Article
+  bill: number = paymentsStore.bill
+
+  incomeArticles(): incomeArticle[] {
+    return paymentsStore.incomeArticles
+  }
+
+  outcomeArticles(): outcomeArticle[] {
+    return paymentsStore.outcomeArticles
+  }
+
+  get types() {
+    if (this.paymentType === 'income') {
+      return this.incomeArticles
+    } else {
+      return this.outcomeArticles
     }
-  validations: {
-    amount: { required },
-    comment: { required },
-    paymentArticle: { required },
-    managerName: { required },
-  },
-  computed: {
-    ...mapState('payments', ['bill', 'incomeArticles', 'outcomeArticles']),
-  },
+  }
+
+  // validations: {
+  //   amount: { required },
+  //   comment: { required },
+  //   paymentArticle: { required },
+  //   managerName: { required },
+  // }
   beforeMount() {
     this.managerName = this.$store.getters['auth/userName']
     this.amount = this.amountProp
     this.comment = this.commentProp
     this.paymentArticle = this.paymentArticleProp
-  },
-  methods: {
-    closeModal() {
-      this.$emit('close')
-    },
-    async createIncome() {
-      if (this.$v.$invalid) {
-        this.$v.$touch()
-      }
-      const newBill =
-        this.paymentType === 'income'
-          ? +this.bill + +this.amount
-          : +this.bill - +this.amount
-      const paymentData = {
-        type: this.paymentType,
-        date: new Date().toLocaleDateString(),
-        amount: this.amount,
-        comment: this.comment,
-        paymentArticle: this.paymentArticle,
-        managerName: this.managerName,
-        bill: newBill,
-      }
-      await this.$store.dispatch('payments/createPayment', paymentData)
-      this.closeModal()
-    },
-  },
+  }
+
+  @Emit('close')
+  closeModal() {}
+
+  async createIncome() {
+    // if (this.$v.$invalid) {
+    //   this.$v.$touch()
+    // }
+    const newBill: number =
+      this.paymentType === 'income'
+        ? this.bill + this.amount
+        : this.bill - this.amount
+    const paymentData = {
+      type: this.paymentType,
+      date: new Date(),
+      amount: this.amount,
+      comment: this.comment,
+      paymentArticle: this.paymentArticle as Article,
+      managerName: this.managerName,
+      bill: newBill,
+    }
+    await paymentsStore.createPayment(paymentData)
+    this.closeModal()
+  }
 }
 </script>
 <style lang="scss" scoped>

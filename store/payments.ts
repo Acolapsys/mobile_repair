@@ -2,11 +2,11 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { ActionContext } from 'vuex'
 import { $fire } from '~/utils/api'
 
-enum incomeArticle {
+export const enum incomeArticle {
   'Оплата покупателя за товар/услугу',
   'Прочий приход денег',
 }
-enum outcomeArticle {
+export const enum outcomeArticle {
   'Выплата зарплаты',
   'Прочий расход денег',
   'Оплата поставщикам товаров/запчастей',
@@ -16,6 +16,7 @@ enum outcomeArticle {
   'Оплата рекламы',
   'Выплата налогов',
 }
+export type Article = incomeArticle | outcomeArticle
 
 interface Payment {
   type: string
@@ -25,7 +26,7 @@ interface Payment {
   paymentArticle: incomeArticle | outcomeArticle
   managerName: string
   bill: number
-  id: string
+  id?: string
 }
 @Module({
   name: 'payments',
@@ -38,27 +39,24 @@ export default class Payments extends VuexModule {
   public outcomeArticles: Array<outcomeArticle> = []
 
   @Action
-  public async createPayment(
-    payment: Payment,
-    { dispatch, commit, getters }: ActionContext<any, any>
-  ) {
-    const companyId: string = getters['company/companyId']
+  public async createPayment(payment: Payment) {
+    const companyId: string = this.context.getters['company/companyId']
     try {
       await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .collection('payments')
         .add(payment)
-      await dispatch('payments/updateBill', payment.bill)
+      await this.context.dispatch('payments/updateBill', payment.bill)
     } catch (e) {
-      commit('setError', e)
+      this.context.commit('setError', e)
       throw e
     }
   }
 
   @Action
-  public async fetchPayments({ commit, getters }: ActionContext<any, any>) {
-    const companyId = getters['company/companyId']
+  public async fetchPayments() {
+    const companyId = this.context.getters['company/companyId']
     const paymentsData: Array<Payment> = []
     try {
       await $fire.firestore
@@ -74,44 +72,44 @@ export default class Payments extends VuexModule {
         })
       return paymentsData
     } catch (e) {
-      commit('setError', e)
+      this.context.commit('setError', e)
       throw e
     }
   }
 
   @Action
-  public async getBill({ commit, getters }: ActionContext<any, any>) {
-    const companyId = getters['company/companyId']
+  public async getBill() {
+    console.log('getBill')
+    const companyId = this.context.getters['company/companyId']
     try {
       await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .get()
         .then((res) => {
+          console.log('bill')
           if (res.exists) {
-            commit('setBill', res?.data().bill)
+            console.log('store-bill')
+            this.context.commit('setBill', res?.data().bill)
           }
         })
     } catch (e) {
-      commit('setError', e)
+      this.context.commit('setError', e)
       throw e
     }
   }
 
   @Action
-  public async updateBill(
-    newBill: number,
-    { commit, getters }: ActionContext<any, any>
-  ) {
-    const companyId = getters['company/companyId']
+  public async updateBill(newBill: number) {
+    const companyId = this.context.getters['company/companyId']
     try {
       await $fire.firestore
         .collection('companies')
         .doc(companyId)
         .update({ bill: newBill })
-      commit('setBill', newBill)
+      this.context.commit('setBill', newBill)
     } catch (e) {
-      commit('setError', e)
+      this.context.commit('setError', e)
       throw e
     }
   }

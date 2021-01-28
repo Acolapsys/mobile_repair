@@ -23,5 +23,6 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 1,
     // https://github.com/typescript-eslint/typescript-eslint/issues/103
     '@typescript-eslint/no-parameter-properties': 0,
+    'import/no-mutable-exports': 'off',
   },
 }
